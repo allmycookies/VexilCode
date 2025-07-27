@@ -1,9 +1,10 @@
 # VexilCode Suite v0.9.4.b4
 
 Schluss mit dem Jonglieren zwischen FTP-Clients, SSH-Terminals und unzähligen Browser-Tabs. Holen Sie sich die Kontrolle über Ihren Server-Workflow zurück – mit einer einzigen, integrierten und blitzschnellen Anwendung, die direkt auf Ihrem Server läuft.
+
 VexilCode ist Ihr persönliches, selbst-gehostetes "Schweizer Taschenmesser" für die Webentwicklung, geschrieben in purem, performantem PHP.
 
-![Screenshot Placeholder](https://dev2.safra-media.com/vexilcode_logo1.png)
+![Screenshot Placeholder](https://via.placeholder.com/1200x600.png/212529/FFFFFF?text=VexilCode+Suite+Screenshot)
 
 ---
 
@@ -20,10 +21,10 @@ In einer Welt von komplexen Cloud-Diensten und schweren Desktop-Anwendungen biet
 
 ## ✨ Kernfunktionen im Detail
 
--   **🗂️ Professioneller Dateimanager:** Eine vollwertige, reaktive Oberfläche für alle Dateioperationen. Inklusive Upload/Download, Berechtigungsverwaltung (`chmod`), Archivierung (.zip) und einer intelligenten Pfad-Navigatio].
--   **🌿 Pragmatische Versionierung ("Vergit"):** Versionieren Sie Ihre Projekte ohne Git-Kenntnisse. "Vergit" ist ein leichtgewichtiges, dateibasiertes System, mit dem Sie Projektstände speichern, "Beta"- und "Stable"-Kanäle definieren und Test-Instanzen mit einem Klick erstellen können.
--   **💻 Integrierter Code Editor:** Bearbeiten Sie Code direkt im Browser mit dem leistungsstarken Ace Editor. Inklusive Syntax-Hervorhebung, Suchen & Ersetzen und der Möglichkeit, vor dem Speichern automatisch Backups anzulegen.
--   **🔍 Mächtiges Suchen & Ersetzen:** Durchsuchen Sie rekursiv ganze Projekte und führen Sie komplexe Ersetzungen durch. Die `.srbkup`-Funktion stellt sicher, dass Sie jede Änderung bei Bedarf rückgängig machen können.
+-   **🗂️ Professioneller Dateimanager:** Eine vollwertige, reaktive Oberfläche für alle Dateioperationen. [cite_start]Inklusive Upload/Download, Berechtigungsverwaltung (`chmod`), Archivierung (.zip) und einer intelligenten Pfad-Navigation [cite: 1181, 1182, 224-228].
+-   **🌿 Pragmatische Versionierung ("Vergit"):** Versionieren Sie Ihre Projekte ohne Git-Kenntnisse. [cite_start]"Vergit" ist ein leichtgewichtiges, dateibasiertes System, mit dem Sie Projektstände speichern, "Beta"- und "Stable"-Kanäle definieren und Test-Instanzen mit einem Klick erstellen können [cite: 481, 1363-1476].
+-   **💻 Integrierter Code Editor:** Bearbeiten Sie Code direkt im Browser mit dem leistungsstarken Ace Editor. [cite_start]Inklusive Syntax-Hervorhebung, Suchen & Ersetzen und der Möglichkeit, vor dem Speichern automatisch Backups anzulegen [cite: 1123-1171].
+-   **🔍 Mächtiges Suchen & Ersetzen:** Durchsuchen Sie rekursiv ganze Projekte und führen Sie komplexe Ersetzungen durch. [cite_start]Die `.srbkup`-Funktion stellt sicher, dass Sie jede Änderung bei Bedarf rückgängig machen können [cite: 482, 1200-1289].
 
 ---
 
@@ -39,8 +40,8 @@ Dies ist das absolute **Highlight** der VexilCode Suite und der Grund, warum Ihr
 
 Der **Collector** ist mehr als nur ein Kopierwerkzeug. Er scannt Ihr gesamtes Projekt und erstellt eine einzige, makellos formatierte Textdatei.
 
--   **Kontext ist König:** Das "Geheimnis" sind die automatisch eingefügten Kommentare (`// Quelldatei: ...`), die den exakten Pfad jeder Datei bewahren.
--   **Vollständige Kontrolle:** Sie entscheiden per Klick, welche Dateitypen (php, js, css etc.) gesammelt werden sollen.
+-   [cite_start]**Kontext ist König:** Das "Geheimnis" sind die automatisch eingefügten Kommentare (`// Quelldatei: ...`), die den exakten Pfad jeder Datei bewahren[cite: 1069].
+-   [cite_start]**Vollständige Kontrolle:** Sie entscheiden per Klick, welche Dateitypen (php, js, css etc.) gesammelt werden sollen [cite: 1077-1079].
 
 ### **Schritt 2: COLLABORATE - Die nahtlose Zusammenarbeit**
 
@@ -55,9 +56,9 @@ Die KI erhält den **vollständigen Code und die Struktur**, was zu drastisch be
 Sobald die KI ihre überarbeitete Version des Codes liefert, kopieren Sie diese. Fügen Sie sie in den **Disposer** ein.
 
 Der Disposer agiert wie ein intelligenter Dekonstruktor:
--   Er liest die `// Quelldatei:` Kommentare.
--   Er erstellt automatisch alle notwendigen Unterverzeichnisse in einem neuen Zielordner.
--   Er schreibt jede Datei fehlerfrei an ihren ursprünglichen Ort zurück.
+-   [cite_start]Er liest die `// Quelldatei:` Kommentare[cite: 1103, 1105].
+-   [cite_start]Er erstellt automatisch alle notwendigen Unterverzeichnisse in einem neuen Zielordner [cite: 1110-1111].
+-   [cite_start]Er schreibt jede Datei fehlerfrei an ihren ursprünglichen Ort zurück[cite: 1113].
 
 Das manuelle, fehleranfällige Wiedereinfügen von Code gehört der Vergangenheit an. Ein ganzes Projekt-Refactoring – erledigt in Minuten, nicht in Stunden.
 
@@ -68,7 +69,8 @@ Das manuelle, fehleranfällige Wiedereinfügen von Code gehört der Vergangenhei
 1.  **Herunterladen:** Laden Sie die neueste Version herunter.
 2.  **Hochladen:** Entpacken Sie das Archiv und laden Sie die Dateien auf Ihren Webserver.
 3.  **Berechtigungen setzen:** Geben Sie dem Webserver Schreibrechte (`755` oder `775`) für die Verzeichnisse `config/` und `data/`.
-4.  **Setup ausführen:** Rufen Sie die Anwendung im Browser auf, um den ersten Administrator-Benutzer anzulegen.
+4.  [cite_start]**Setup ausführen:** Rufen Sie die Anwendung im Browser auf, um den ersten Administrator-Benutzer anzulegen [cite: 950-951].
+5.  [cite_start]**(Optional) Aufräumen:** Rufen Sie die Datei `ace_cleanup.php` einmal im Browser auf, um die Editor-Bibliothek für schnellere Ladezeiten zu verkleinern [cite: 1-5]. Löschen Sie die Datei danach.
 
 ---
 
@@ -86,7 +88,7 @@ Dieses Projekt steht unter der **MIT-Lizenz**. Sie können den Code frei verwend
   <summary>Vollständigen Lizenztext anzeigen</summary>
   
   ```plaintext
-  Copyright (c) [2025] [Denys Safra]
+  Copyright (c) [2025] [Ihr Name oder Firmenname]
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal

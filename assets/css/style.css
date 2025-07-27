@@ -1,0 +1,469 @@
+/* assets/css/style.css */
+
+/* --- Globale Styles --- */
+.log-output {
+    height: 65vh;
+    background-color: var(--bs-tertiary-bg);
+    border: 1px solid var(--bs-border-color);
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85rem;
+    padding: 1rem;
+    border-radius: var(--bs-border-radius);
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+.log-output .log-entries p { margin-bottom: 0.3rem; line-height: 1.4; }
+.log-line-detail { display: block; padding-left: 2.5rem;
+    font-style: italic; color: var(--bs-secondary-color); border-left: 2px solid var(--bs-border-color-translucent); margin-left: 10px; padding-top: 5px; padding-bottom: 5px; }
+.sitemap-output pre { max-height: 70vh;
+    background-color: var(--bs-tertiary-bg); font-size: 0.9em; padding: 1rem; border-radius: var(--bs-border-radius); border: 1px solid var(--bs-border-color); }
+.sitemap-output .error { color: var(--bs-danger-text-emphasis); font-weight: bold;
+}
+.sitemap-output .info { color: var(--bs-info-text-emphasis); }
+td.bg-body-tertiary {width: 100vw;}
+.form-control {font-size: 0.8rem;}
+
+/* --- Honeypot-Feld Tarnung --- */
+.hp-email-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.hp-email-field label,
+.hp-email-field input {
+    color: #FFFFFF;
+    background: #FFFFFF;
+    --bs-body-color: #FFFFFF; 
+    --bs-body-bg: #FFFFFF;
+    --bs-tertiary-bg: #FFFFFF;
+    font-size: 2px !important;
+    line-height: 1px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 1px solid #FFFFFF !important;
+    width: 2px !important;
+    height: 1px !important;
+}
+
+
+/* --- Dateimanager Style Anpassungen (TFM-Look) --- */
+.fm-table {
+    font-size: 0.8rem;
+    font-weight: normal;
+    table-layout: auto;
+}
+
+.fm-table td, .fm-table th {
+    padding: 0.25rem 0.5rem;
+    vertical-align: middle;
+    /* white-space: nowrap; <-- WICHTIG: Entfernt für besseres Verhalten in .table-responsive */
+    border-color: var(--bs-border-color-translucent);
+}
+
+/* Styling für "Ebene höher" Button */
+.fm-table tr.fm-up-level a {
+    font-weight: 500;
+    color: var(--bs-secondary-color);
+}
+.fm-table tr.fm-up-level:hover {
+    background-color: var(--bs-tertiary-bg);
+    cursor: pointer;
+}
+
+.fm-col-checkbox { width: 3%; text-align: center;
+}
+.fm-col-name { 
+    width: 40%; 
+    white-space: normal; 
+    word-break: break-all;
+    /* Bricht lange Dateinamen ohne Leerzeichen um */
+}
+.fm-col-size, .fm-col-perms, .fm-col-owner, .fm-col-modified, .fm-col-type { width: auto; }
+.fm-col-actions { width: 15%;
+}
+
+.fm-table, .fm-table a, .fm-table .perms-link {
+    color: var(--bs-body-color);
+    text-decoration: none;
+    font-weight: normal;
+    border-bottom: none;
+}
+.fm-table a:hover { text-decoration: underline; color: var(--bs-primary); }
+.fm-table .perms-link:hover { border-bottom: 1px dotted var(--bs-primary);
+}
+
+.fm-table .fa-folder, .fm-table .fa-file-alt {
+    color: var(--bs-secondary-color);
+    font-size: 1em;
+    margin-right: 0.6em;
+}
+
+.fm-table th.sortable i { font-size: 0.8em;
+    color: var(--bs-tertiary-color); }
+.fm-table th.sortable:hover i { color: var(--bs-secondary-color); }
+
+.fm-table thead.table-dark {
+    --bs-table-bg: var(--bs-tertiary-bg);
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--bs-border-color);
+    border-bottom: 2px solid var(--bs-border-color);
+}
+.fm-table thead.table-dark th { font-weight: 600; }
+
+.btn {
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+}
+.list-group {
+    --bs-list-group-item-padding-y: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: normal;
+    table-layout: auto;
+}
+.fm-table .btn-group-sm {
+    gap: 2px;
+}
+.fm-table .btn-group-sm .btn {
+    border-radius: var(--bs-border-radius-sm) !important;
+    background-color: var(--bs-body-color);
+    border: 1px solid var(--bs-body-color);
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+}
+.fm-table .btn-group-sm .btn:hover {
+    background-color: var(--bs-secondary-color);
+    border-color: var(--bs-secondary-color);
+}
+.fm-table .btn-group-sm .btn .fas {
+    color: var(--bs-body-bg);
+    margin-right: 0;
+}
+
+.fm-breadcrumb-custom {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0.3rem 0.75rem;
+    background-color: var(--bs-tertiary-bg);
+    border-radius: var(--bs-border-radius-sm);
+    font-size: 0.8rem;
+    gap: 0.4rem;
+}
+.fm-breadcrumb-custom a {
+    color: var(--bs-secondary-color);
+    text-decoration: none;
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--bs-border-radius-sm);
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+.fm-breadcrumb-custom a:hover {
+    background-color: var(--bs-secondary-bg);
+    color: var(--bs-primary);
+}
+.fm-breadcrumb-custom .separator {
+    color: var(--bs-border-color);
+    font-size: 0.6rem;
+}
+.fm-breadcrumb-custom .active {
+    color: var(--bs-body-color);
+    font-weight: 600;
+    padding: 0.1rem 0.4rem;
+}
+
+/* KORREKTUR: fm-bulk-actions dauerhaft fixiert */
+.fm-bulk-actions {
+    position: fixed;
+    /* Dauerhaft fixiert */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--bs-body-bg);
+    /* Hintergrundfarbe anpassen */
+    border-top: 1px solid var(--bs-border-color);
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+    /* Sicherstellen, dass es über anderem Inhalt liegt */
+    padding-bottom: env(safe-area-inset-bottom);
+    /* Für mobile Geräte */
+    display: none;
+    /* Standardmäßig ausgeblendet, JS zeigt es bei Auswahl */
+}
+
+/* KORREKTUR: Padding für den Body, um Platz für die fixe Leiste zu schaffen */
+body.has-fixed-footer {
+    padding-bottom: 0;
+    /* Wird dynamisch per JS gesetzt */
+}
+
+
+/* =========================================== */
+/* --- Responsive Anpassungen (Smartphones) --- */
+/* =========================================== */
+
+@media (max-width: 767.98px) {
+    /* --- Allgemein --- */
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* --- Navbar Anpassungen für Mobilgeräte --- */
+    .navbar-brand {
+        font-size: 1.1rem;
+        /* Etwas kleiner auf Mobilgeräten */
+    }
+    .navbar-toggler {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    .navbar-nav .nav-link {
+        padding-left: 1rem !important;
+        /* Einrückung für bessere Lesbarkeit */
+    }
+    .navbar-text {
+        margin-right: 0 !important;
+        /* Abstand entfernen */
+        margin-bottom: 0.5rem;
+        /* Abstand nach unten */
+        display: block;
+        /* Volle Breite */
+        text-align: center;
+    }
+    .navbar .d-flex.align-items-center {
+        flex-direction: column;
+        /* Elemente untereinander anordnen */
+        align-items: stretch !important;
+        /* Volle Breite einnehmen */
+    }
+    .navbar .btn-outline-light,
+    .navbar .btn-outline-danger {
+        width: 100%;
+        /* Buttons volle Breite */
+        margin-right: 0 !important;
+        margin-bottom: 0.5rem;
+    }
+    .navbar .btn-outline-danger {
+        margin-bottom: 0 !important;
+        /* Kein Abstand am letzten Button */
+    }
+
+    /* --- Dateimanager --- */
+    
+    /* Header-Layout anpassen: Elemente untereinander anordnen */
+    .card-header .d-flex.justify-content-between {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0;
+    }
+    
+    /* KORREKTUR: Haupt-Header-Buttons flexibel gestalten */
+    #fm-header-main {
+        flex-direction: column;
+        /* Buttons untereinander */
+        align-items: stretch !important;
+        /* Volle Breite */
+        width: 100%;
+    }
+    #fm-header-main .btn,
+    #fm-header-main .btn-group {
+        width: 100%;
+        /* Buttons und Button-Gruppen volle Breite */
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    #fm-header-main .spinner-border {
+        align-self: center;
+        /* Spinner zentrieren */
+        margin-top: 0.5rem;
+    }
+
+    /* KORREKTUR: Info-Bar flexibel gestalten */
+    #fm-info-bar {
+        flex-wrap: wrap;
+        /* Badges umbrechen lassen */
+        justify-content: center;
+        /* Badges zentrieren */
+        width: 100%;
+        margin-top: 0.1rem;
+    }
+    #fm-info-bar .badge {
+        margin: 0;
+        /* Abstand zwischen Badges */
+    }
+
+    /* * KORREKTUR: Spalten über ihre Position (nth-child) ausblenden.
+     * Dies stellt sicher, dass sowohl <th> im Kopf als auch <td> im Körper
+     * betroffen sind und die Ausrichtung korrekt bleibt.
+     * Spalten: 4 (Berechtigung), 5 (Besitzer), 7 (Typ)
+    */
+    .fm-table th:nth-child(4), .fm-table td:nth-child(4),
+    .fm-table th:nth-child(5), .fm-table td:nth-child(5),
+    .fm-table th:nth-child(7), .fm-table td:nth-child(7) {
+        display: none;
+    }
+
+    /* Spaltenbreiten für mobile Ansicht anpassen */
+    .fm-table .fm-col-checkbox { width: 10%;
+    }
+    .fm-table .fm-col-name { 
+        width: 50%;
+        /* KORREKTUR: Sicherstellen, dass lange Dateinamen umbrechen */
+        word-break: break-word; 
+        white-space: normal;
+    }
+    .fm-table .fm-col-size { width: auto; }
+    .fm-table .fm-col-modified { width: auto;
+    }
+    .fm-table .fm-col-actions { width: auto; text-align: right;
+    }
+
+    /* Buttons in der Aktionsspalte: Etwas mehr Klickfläche */
+    .fm-table .btn-group-sm .btn {
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* Bulk Actions im Footer anpassen */
+    .fm-bulk-actions .d-flex {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch !important;
+    }
+    .fm-bulk-actions .btn-group {
+        width: 100%;
+    }
+    .fm-bulk-actions .btn-group .btn {
+        flex-grow: 1;
+    }
+    .fm-bulk-actions .ms-auto {
+        margin-left: 0 !important;
+    }
+
+    /* Zweispaltige Layouts (z.B. Collector) anpassen, damit sie auf Mobilgeräten einen Abstand haben */
+    .row > [class*="col-lg-"]:not(:last-child) {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Log-Fenster Höhe anpassen */
+    .log-output {
+        height: 50vh;
+        /* Etwas weniger Höhe auf kleinen Bildschirmen */
+    }
+
+    /* Sitemap: Eingabefeld und Button-Gruppe anpassen */
+    .sitemap-output pre {
+        white-space: pre-wrap;
+        /* Textumbruch für lange Zeilen */
+        word-break: break-word;
+    }
+    .sitemap-output .card-header .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.5rem;
+    }
+    .sitemap-output .card-header .btn {
+        width: 100%;
+    }
+    .input-group .form-control-lg {
+        font-size: 0.9rem;
+        /* Etwas kleiner für Mobil */
+    }
+    .input-group .btn {
+        padding: 0.5rem 0.75rem;
+        /* Buttons anpassen */
+    }
+}
+
+@media (max-width: 480px) {
+    /* Kleinere Schriftgrößen für sehr kleine Bildschirme */
+    .fm-table {
+        font-size: 0.75rem;
+    }
+
+    .fm-table td, .fm-table th {
+        padding: 0.2rem 0.4rem;
+    }
+    
+    /* Spalte "Zuletzt geändert" (Position 6) auf sehr kleinen Bildschirmen auch ausblenden */
+    .fm-table th:nth-child(6), .fm-table td:nth-child(6) {
+        display: none;
+    }
+
+    /* Pfad-Input-Feld und Go-Button anpassen */
+    .input-group.input-group-sm {
+        flex-wrap: wrap;
+        /* Input und Button umbrechen lassen */
+    }
+    .input-group.input-group-sm .form-control,
+    .input-group.input-group-sm .btn {
+        width: 100%;
+        /* Volle Breite */
+        margin-bottom: 0.5rem;
+        /* Abstand zwischen den Elementen */
+    }
+    .input-group.input-group-sm .btn:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* =========================================== */
+/* --- Diff Viewer Styles (Vergit)         --- */
+/* =========================================== */
+.diff-container-wrapper .accordion-button {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--bs-tertiary-bg);
+}
+.diff-container-wrapper .accordion-body {
+    font-size: 0.8rem;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+.diff-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: pre;
+    font-family: inherit;
+    border: none;
+}
+.diff-table td {
+    padding: 0.1rem 0.5rem;
+    vertical-align: top;
+    border-top: 1px solid var(--bs-border-color-translucent);
+}
+.diff-line-num {
+    text-align: right;
+    color: var(--bs-secondary-color);
+    background-color: var(--bs-tertiary-bg);
+    padding-right: 10px;
+    -webkit-user-select: none; user-select: none;
+    width: 40px;
+    border-right: 1px solid var(--bs-border-color-translucent);
+}
+.diff-line {
+    width: 100%;
+    display: inline-block;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+.diff-marker {
+    display: inline-block;
+    width: 15px;
+    text-align: center;
+    -webkit-user-select: none; user-select: none;
+}
+.diff-table tr.diff-added td {
+    background-color: rgba(40, 167, 69, 0.15);
+}
+.diff-table tr.diff-deleted td {
+    background-color: rgba(220, 53, 69, 0.15);
+}
+.diff-table tr.diff-unchanged td:not(.diff-line-num) {
+    color: var(--bs-secondary-color);
+}
