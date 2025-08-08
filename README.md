@@ -1,3 +1,122 @@
+# ENGLISH:
+# VexilCode Suite Update 0.9.6.llm.b1
+
+**Please note: The project is currently in German.**
+
+![Screenshot Placeholder](https://dev2.safra-media.com/vexilcode_logo1.png)
+
+VexilCode Suite is a self-hosted web application written in PHP that provides an integrated development environment (IDE) directly on the server. The purpose of the application is to consolidate tools such as FTP clients, SSH terminals, and code editors into a single, web-based interface. This allows for the direct editing and management of web projects on the server, thereby speeding up the development workflow.
+
+---
+
+## Core Features
+
+-   **File Manager**: A reactive user interface for file and directory operations, including upload/download, permissions management (`chmod`), archiving (ZIP/Unzip), and path navigation.
+-   **Code Editor**: Based on the Ace Editor, it offers syntax highlighting, find & replace, and a feature for automatically creating backups before saving.
+-   **"Vergit" Versioning**: A lightweight, file-based system for versioning projects without the need for Git. It allows saving project states, defining "Beta" and "Stable" channels, and creating test instances.
+-   **Search & Replace**: A tool for recursive search and replace operations across entire project directories. The `.srbkup` feature ensures that changes can be undone if necessary.
+-   **Collector & Disposer**: A specialized workflow to simplify collaboration with code-generating Large Language Models (LLMs).
+-   **LLM Integration**: A direct interface for communicating with external AI APIs from Google (Gemini) and Moonshot AI (Kimi).
+
+---
+
+## AI-Powered Workflow: Collector & Disposer
+
+A key feature is the optimized workflow for interacting with code-generating AIs.
+
+1.  **Collector**: This tool analyzes a selected project directory and consolidates all relevant files (filterable by type) into a single, formatted text file. The crucial feature is the automatically inserted metadata comments that preserve the exact path of each source file (e.g., `// Source file: lib/helpers.php`).
+
+2.  **Collaboration**: The entire content of this collected file is copied and pasted into the prompt of an LLM (e.g., Gemini, GPT-4). The AI thus receives the complete code and file structure of the project, which significantly improves the quality and coherence of its code suggestions.
+
+3.  **Disposer**: After the AI returns the revised code, it is pasted into the Disposer. The tool reads the `// Source file:` comments, automatically creates the necessary directory structure in a new target folder, and writes each file back to its original location without errors.
+
+**Note**: The reliability of the Disposer module depends on the output discipline of the LLM. The existing code block must be left intact by the LLM and only its content modified. The system works best for small to medium-sized projects where the entire context fits into the LLM's prompt.
+
+---
+
+## LLM API Integration
+
+VexilCode enables direct communication with the following LLM providers via their APIs:
+
+-   **Google Gemini**: Uses the **`gemini-1.5-flash-latest`** model. Requests are sent to the `https://generativelanguage.googleapis.com` endpoint.
+-   **Moonshot AI (Kimi)**: Uses the **`moonshot-v1-32k`** model. Requests are sent to the `https://api.moonshot.cn` endpoint.
+
+The corresponding API keys must be stored in the application's settings. Communication is server-to-server to keep the keys secure.
+
+---
+
+## Installation
+
+1.  **Download**: Download the latest version.
+2.  **Upload**: Unzip the archive and upload the files to your web server.
+3.  **Permissions**: Grant the web server write permissions (`755` or `775`) for the `config/` and `data/` directories.
+4.  **Setup**: Open the application in your browser to create the first administrator user.
+5.  **(Optional) Cleanup**: Open the `ace_cleanup.php` file once in your browser to reduce the size of the editor library for faster loading times. Delete the file afterward.
+
+---
+
+## Security Features
+
+The application was developed with a focus on security and implements multiple layers of protection.
+
+-   **Path Traversal Protection**: All file operations are rigorously validated on the server side. The use of `realpath()` ensures that no access to files or directories outside the `$ROOT_PATH` defined in `config/config.php` is possible.
+-   **Cross-Site Scripting (XSS) Prevention**: All dynamic outputs originating from users or the file system (e.g., file names, paths) are consistently treated with `htmlspecialchars()` before being rendered in HTML.
+-   **Cross-Site Request Forgery (CSRF) Protection**: All state-changing actions (POST requests) are protected by a session-based CSRF token. Every form sends a token that is validated on the server side.
+-   **Robust Authentication & Session Security**:
+    * Passwords are securely stored and verified using `password_hash()` and `password_verify()`.
+    * Brute-force protection temporarily locks user accounts after multiple failed login attempts.
+    * Bot protection using a time-trap and a honeypot field makes automated login attempts more difficult.
+    * The session ID is regenerated after a successful login with `session_regenerate_id(true)` to prevent session fixation attacks.
+-   **Secure File Uploads**: File names are sanitized during upload with `basename()` to remove embedded path information. The final storage location is also validated against the `$ROOT_PATH`.
+-   **Whitelisted Routing**: The main router in `index.php` uses a fixed whitelist of allowed tools (`$allowed_tools`) to prevent the unauthorized inclusion of arbitrary PHP files.
+
+---
+
+## Documentation of Relevant Files and Functions
+
+-   `index.php`: The central entry point and router of the application. It processes the `tool` parameter, loads the corresponding module and the user interface.
+-   `login.php` / `logout.php`: Manage user authentication and the initial setup process. Implements security measures like brute-force protection.
+-   `config/config.php`: Defines the fundamental system paths `$ROOT_PATH` and `$WEB_ROOT_PATH`, which are crucial for the security architecture.
+-   `helpers.php`: Contains global helper functions.
+    -   `loadSettings()` / `saveSettings()`: Manage the application-wide settings in `config/settings.json`.
+    -   `generate_csrf_token()` / `validate_csrf_token()`: Generate and validate tokens to protect against Cross-Site Request Forgery.
+    -   `logMsg()` / `renderLog()`: Standardized functions for creating and displaying log messages.
+-   `lib/vergit.class.php`: The core logic for the "Vergit" system. Manages all operations related to projects, versions, instances, and archives.
+-   `lib/file_manager_api.php`: The backend for the file manager. Handles all AJAX requests for file operations and rigorously validates all paths.
+-   `lib/llm_api.php`: Serves as a server-side proxy for requests to the configured LLM APIs. It takes prompts from the editor and forwards them securely to Gemini or Kimi.
+
+---
+
+## License
+
+This project is licensed under the **MIT License**. For details, see the `LICENSE.md` file.
+
+<details>
+  <summary>Show full license text</summary>
+  
+  ```plaintext
+  Copyright (c) [2025] [Denys Safra]
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+```
+
+# GERMAN:
 # VexilCode Suite Update 0.9.6.llm.b1
 
 ![Screenshot Placeholder](https://dev2.safra-media.com/vexilcode_logo1.png)
@@ -113,6 +232,7 @@ Dieses Projekt steht unter der **MIT-Lizenz**. Details finden Sie in der `LICENS
   SOFTWARE.
   ```
 </details>
+
 
 
 
