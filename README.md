@@ -1,87 +1,91 @@
-# VexilCode Suite v0.9.4.b4
-
-Schluss mit dem Jonglieren zwischen FTP-Clients, SSH-Terminals und unzähligen Browser-Tabs. Holen Sie sich die Kontrolle über Ihren Server-Workflow zurück – mit einer einzigen, integrierten und blitzschnellen Anwendung, die direkt auf Ihrem Server läuft.
-
-VexilCode ist Ihr persönliches, selbst-gehostetes "Schweizer Taschenmesser" für die Webentwicklung, geschrieben in purem, performantem PHP.
-
+# VexilCode Suite
 ![Screenshot Placeholder](https://dev2.safra-media.com/vexilcode_logo1.png)
 
----
-
-## 🤔 Warum VexilCode?
-
-In einer Welt von komplexen Cloud-Diensten und schweren Desktop-Anwendungen bietet VexilCode einen erfrischend anderen Ansatz:
-
-* **🚀 Effizienz:** Führen Sie Operationen wie das Zippen von Verzeichnissen oder Suchen & Ersetzen direkt auf dem Server aus – um ein Vielfaches schneller als das Herunterladen, Bearbeiten und erneute Hochladen von Dateien.
-* **🔒 Volle Kontrolle:** Ihre Daten, Ihre Werkzeuge, Ihre Regeln. Da VexilCode selbst-gehostet ist, bleiben Ihr Code und Ihre Konfigurationen vollständig unter Ihrer Kontrolle, ohne Abhängigkeiten von Drittanbietern.
-* **💡 Innovativer KI-Workflow:** VexilCode ist die **erste und einzige Suite** mit einem dedizierten Workflow, der die Zusammenarbeit mit Code-generierenden KIs wie Gemini oder GPT-4 nicht nur ermöglicht, sondern revolutioniert. Mehr dazu unten.
-* **⚙️ Einfachheit:** Keine komplizierten Abhängigkeiten, keine Docker-Container, kein aufwendiges Setup. VexilCode läuft auf nahezu jedem Standard-Webhosting mit PHP-Unterstützung.
+VexilCode Suite ist eine in PHP geschriebene, selbst-gehostete Web-Anwendung, die eine integrierte Entwicklungsumgebung (IDE) direkt auf dem Server bereitstellt. Der Zweck der Anwendung ist die Konsolidierung von Werkzeugen wie FTP-Clients, SSH-Terminals und Code-Editoren in einer einzigen, webbasierten Oberfläche. Dies ermöglicht die direkte Bearbeitung und Verwaltung von Webprojekten auf dem Server, wodurch der Entwicklungs-Workflow beschleunigt wird.
 
 ---
 
-## ✨ Kernfunktionen im Detail
+## Kernfunktionen
 
--   **🗂️ Professioneller Dateimanager:** Eine vollwertige, reaktive Oberfläche für alle Dateioperationen. Inklusive Upload/Download, Berechtigungsverwaltung (`chmod`), Archivierung (.zip) und einer intelligenten Pfad-Navigatio].
--   **🌿 Pragmatische Versionierung ("Vergit"):** Versionieren Sie Ihre Projekte ohne Git-Kenntnisse. "Vergit" ist ein leichtgewichtiges, dateibasiertes System, mit dem Sie Projektstände speichern, "Beta"- und "Stable"-Kanäle definieren und Test-Instanzen mit einem Klick erstellen können.
--   **💻 Integrierter Code Editor:** Bearbeiten Sie Code direkt im Browser mit dem leistungsstarken Ace Editor. Inklusive Syntax-Hervorhebung, Suchen & Ersetzen und der Möglichkeit, vor dem Speichern automatisch Backups anzulegen.
--   **🔍 Mächtiges Suchen & Ersetzen:** Durchsuchen Sie rekursiv ganze Projekte und führen Sie komplexe Ersetzungen durch. Die `.srbkup`-Funktion stellt sicher, dass Sie jede Änderung bei Bedarf rückgängig machen können.
-
----
-
-## 🤖 Revolutionieren Sie Ihren KI-Workflow mit Collector & Disposer
-
-Dies ist das absolute **Highlight** der VexilCode Suite und der Grund, warum Ihre Arbeitsweise mit KI nie wieder dieselbe sein wird.
-
-**Das Problem:** Jeder, der versucht hat, einer KI ein bestehendes Projekt zur Analyse zu übergeben, kennt den Schmerz: Man kopiert Dutzende Dateien manuell, verliert dabei den Überblick, und die KI hat keinen Kontext über die Dateistruktur, was zu fehlerhaften oder unvollständigen Ergebnissen führt.
-
-**Die VexilCode-Lösung: Ein perfekter 3-Schritte-Kreislauf.**
-
-### **Schritt 1: COLLECT - Das intelligente Sammeln**
-
-Der **Collector** ist mehr als nur ein Kopierwerkzeug. Er scannt Ihr gesamtes Projekt und erstellt eine einzige, makellos formatierte Textdatei.
-
--   **Kontext ist König:** Das "Geheimnis" sind die automatisch eingefügten Kommentare (`// Quelldatei: ...`), die den exakten Pfad jeder Datei bewahren.
--   **Vollständige Kontrolle:** Sie entscheiden per Klick, welche Dateitypen (php, js, css etc.) gesammelt werden sollen.
-
-### **Schritt 2: COLLABORATE - Die nahtlose Zusammenarbeit**
-
-Kopieren Sie den gesamten Inhalt der generierten Sammeldatei. Fügen Sie ihn in den Prompt Ihrer bevorzugten KI ein. Geben Sie Anweisungen wie:
-
-> *"Hier ist mein komplettes PHP-Projekt. Refaktoriere bitte alle Klassen im Verzeichnis `/lib`, um Interfaces zu verwenden. Füge außerdem eine neue Funktion in `helpers.php` hinzu und binde sie in `index.php` ein."*
-
-Die KI erhält den **vollständigen Code und die Struktur**, was zu drastisch besseren und kohärenteren Ergebnissen führt.
-
-### **Schritt 3: DISPOSE - Die magische Wiederherstellung**
-
-Sobald die KI ihre überarbeitete Version des Codes liefert, kopieren Sie diese. Fügen Sie sie in den **Disposer** ein.
-
-Der Disposer agiert wie ein intelligenter Dekonstruktor:
--   Er liest die `// Quelldatei:` Kommentare.
--   Er erstellt automatisch alle notwendigen Unterverzeichnisse in einem neuen Zielordner.
--   Er schreibt jede Datei fehlerfrei an ihren ursprünglichen Ort zurück.
-
-Das manuelle, fehleranfällige Wiedereinfügen von Code gehört der Vergangenheit an. Ein ganzes Projekt-Refactoring – erledigt in Minuten, nicht in Stunden.
+- **Dateimanager**: Eine reaktive Benutzeroberfläche für Datei- und Verzeichnisoperationen, einschließlich Upload/Download, Rechteverwaltung (`chmod`), Archivierung (ZIP/Unzip) und Pfad-Navigation.
+- **Code-Editor**: Basiert auf dem Ace Editor und bietet Syntax-Hervorhebung, Suchen & Ersetzen sowie eine Funktion zur automatischen Erstellung von Backups vor dem Speichern.
+- **"Vergit" Versionierung**: Ein leichtgewichtiges, dateibasiertes System zur Versionierung von Projekten ohne die Notwendigkeit von Git. Es ermöglicht das Speichern von Projektständen, das Definieren von "Beta"- und "Stable"-Kanälen und die Erstellung von Test-Instanzen.
+- **Suchen & Ersetzen**: Ein Werkzeug für rekursive Such- und Ersetzungsvorgänge in ganzen Projektverzeichnissen. Die `.srbkup`-Funktion stellt sicher, dass Änderungen bei Bedarf rückgängig gemacht werden können.
+- **Collector & Disposer**: Ein spezialisierter Workflow zur Vereinfachung der Zusammenarbeit mit Code-generierenden Large Language Models (LLMs).
+- **LLM-Integration**: Eine direkte Schnittstelle zur Kommunikation mit externen KI-APIs von Google (Gemini) und Moonshot AI (Kimi).
 
 ---
 
-## ⚙️ Installation
+## KI-gestützter Workflow: Collector & Disposer
 
-1.  **Herunterladen:** Laden Sie die neueste Version herunter.
-2.  **Hochladen:** Entpacken Sie das Archiv und laden Sie die Dateien auf Ihren Webserver.
-3.  **Berechtigungen setzen:** Geben Sie dem Webserver Schreibrechte (`755` oder `775`) für die Verzeichnisse `config/` und `data/`.
-4.  **Setup ausführen:** Rufen Sie die Anwendung im Browser auf, um den ersten Administrator-Benutzer anzulegen.
+Ein zentrales Merkmal ist der optimierte Arbeitsablauf für die Interaktion mit Code-generierenden KIs.
+
+1.  **Collector**: Dieses Werkzeug analysiert ein ausgewähltes Projektverzeichnis und fasst alle relevanten Dateien (nach Typ filterbar) in einer einzigen, formatierten Textdatei zusammen. Das entscheidende Merkmal sind die automatisch eingefügten Metadaten-Kommentare, die den exakten Pfad jeder Quelldatei beibehalten (z. B. `// Quelldatei: lib/helpers.php`).
+
+2.  **Kollaboration**: Der gesamte Inhalt dieser Sammeldatei wird kopiert und in den Prompt eines LLMs (z. B. Gemini, GPT-4) eingefügt. Die KI erhält somit den vollständigen Code und die Dateistruktur des Projekts, was die Qualität und Kohärenz ihrer Code-Vorschläge signifikant verbessert.
+
+3.  **Disposer**: Nachdem die KI den überarbeiteten Code zurückgegeben hat, wird dieser in den Disposer eingefügt. Das Werkzeug liest die `// Quelldatei:` Kommentare, erstellt automatisch die notwendige Verzeichnisstruktur in einem neuen Zielordner und schreibt jede Datei fehlerfrei an ihren ursprünglichen Ort zurück.
+
+**Hinweis**: Die Zuverlässigkeit des Disposer-Moduls hängt von der Ausgabedisziplin des LLMs ab. Der bestehende Code-Block muss vom LLM intakt gelassen und nur inhaltlich modifiziert werden. Das System funktioniert am besten bei kleineren bis mittelgroßen Projekten, bei denen der gesamte Kontext in den Prompt des LLMs passt.
 
 ---
 
-## 🤝 Mitwirken
+## LLM API-Integration
 
-Beiträge zur Verbesserung der VexilCode Suite sind herzlich willkommen! Ob es sich um Fehlerberichte, Funktionswünsche oder Pull-Requests handelt – lassen Sie uns dieses Tool gemeinsam noch besser machen.
+VexilCode ermöglicht die direkte Kommunikation mit folgenden LLM-Anbietern über deren APIs:
+
+-   **Google Gemini**: Nutzt das Modell **`gemini-1.5-flash-latest`**. Die Anfragen werden an den Endpunkt `https://generativelanguage.googleapis.com` gesendet.
+-   **Moonshot AI (Kimi)**: Nutzt das Modell **`moonshot-v1-32k`**. Die Anfragen werden an den Endpunkt `https://api.moonshot.cn` gesendet.
+
+Die entsprechenden API-Schlüssel müssen in den Einstellungen der Anwendung hinterlegt werden. Die Kommunikation erfolgt Server-zu-Server, um die Schlüssel sicher zu halten.
 
 ---
 
-## 📜 Lizenz
+## Installation
 
-Dieses Projekt steht unter der **MIT-Lizenz**. Sie können den Code frei verwenden, verändern und weiterverbreiten, solange Sie den ursprünglichen Copyright-Vermerk beibehalten.
+1.  **Herunterladen**: Laden Sie die neueste Version herunter.
+2.  **Hochladen**: Entpacken Sie das Archiv und laden Sie die Dateien auf Ihren Webserver.
+3.  **Berechtigungen**: Geben Sie dem Webserver Schreibrechte (`755` oder `775`) für die Verzeichnisse `config/` und `data/`.
+4.  **Setup**: Rufen Sie die Anwendung im Browser auf, um den ersten Administrator-Benutzer anzulegen.
+5.  **(Optional) Aufräumen**: Rufen Sie die Datei `ace_cleanup.php` einmal im Browser auf, um die Editor-Bibliothek für schnellere Ladezeiten zu verkleinern. Löschen Sie die Datei danach.
+
+---
+
+## Sicherheitsfeatures
+
+Die Anwendung wurde mit einem Fokus auf Sicherheit entwickelt und implementiert mehrere Schutzebenen.
+
+-   **Path Traversal Protection**: Alle Dateioperationen werden serverseitig rigoros validiert. Durch die Verwendung von `realpath()` wird sichergestellt, dass kein Zugriff auf Dateien oder Verzeichnisse außerhalb des in `config/config.php` definierten `$ROOT_PATH` möglich ist.
+-   **Cross-Site Scripting (XSS) Prevention**: Alle dynamischen Ausgaben, die von Benutzern oder dem Dateisystem stammen (z.B. Dateinamen, Pfade), werden konsequent mit `htmlspecialchars()` behandelt, bevor sie im HTML gerendert werden.
+-   **Cross-Site Request Forgery (CSRF) Protection**: Alle statusverändernden Aktionen (POST-Requests) werden durch ein Session-basiertes CSRF-Token geschützt. Jedes Formular sendet ein Token, das serverseitig validiert wird.
+-   **Robuste Authentifizierung & Session-Sicherheit**:
+    * Passwörter werden mit `password_hash()` und `password_verify()` sicher gespeichert und überprüft.
+    * Ein Brute-Force-Schutz sperrt Benutzerkonten nach mehreren fehlgeschlagenen Anmeldeversuchen temporär.
+    * Ein Bot-Schutz mittels Time-Trap und Honeypot-Feld erschwert automatisierte Anmeldeversuche.
+    * Die Session-ID wird nach erfolgreichem Login mit `session_regenerate_id(true)` neu generiert, um Session-Fixation-Angriffe zu verhindern.
+-   **Sichere Datei-Uploads**: Dateinamen werden beim Upload mit `basename()` bereinigt, um eingeschleuste Pfadinformationen zu entfernen. Der finale Speicherort wird ebenfalls gegen den `$ROOT_PATH` validiert.
+-   **Whitelisted Routing**: Der Haupt-Router in `index.php` verwendet eine feste Whitelist von erlaubten Tools (`$allowed_tools`), um das unbefugte Einbinden von beliebigen PHP-Dateien zu verhindern.
+
+---
+
+## Dokumentation relevanter Dateien und Funktionen
+
+-   `index.php`: Der zentrale Einstiegspunkt und Router der Anwendung. Er verarbeitet die `tool`-Parameter, lädt das entsprechende Modul und die Benutzeroberfläche.
+-   `login.php` / `logout.php`: Verwalten die Benutzerauthentifizierung und den initialen Setup-Prozess. Implementiert Sicherheitsmaßnahmen wie Brute-Force-Schutz.
+-   `config/config.php`: Definiert die fundamentalen Systempfade `$ROOT_PATH` und `$WEB_ROOT_PATH`, die für die Sicherheitsarchitektur entscheidend sind.
+-   `helpers.php`: Enthält globale Hilfsfunktionen.
+    -   `loadSettings()` / `saveSettings()`: Verwalten die anwendungsweiten Einstellungen in `config/settings.json`.
+    -   `generate_csrf_token()` / `validate_csrf_token()`: Erzeugen und validieren Tokens zum Schutz vor Cross-Site Request Forgery.
+    -   `logMsg()` / `renderLog()`: Standardisierte Funktionen für die Erstellung und Anzeige von Log-Nachrichten.
+-   `lib/vergit.class.php`: Die Kernlogik für das "Vergit"-System. Verwaltet alle Operationen bezüglich Projekten, Versionen, Instanzen und Archiven.
+-   `lib/file_manager_api.php`: Das Backend für den Dateimanager. Verarbeitet alle AJAX-Anfragen für Dateioperationen und validiert alle Pfade rigoros.
+-   `lib/llm_api.php`: Dient als serverseitiger Proxy für Anfragen an die konfigurierten LLM-APIs. Nimmt Prompts vom Editor entgegen und leitet sie sicher an Gemini oder Kimi weiter.
+
+---
+
+## Lizenz
+
+Dieses Projekt steht unter der **MIT-Lizenz**. Details finden Sie in der `LICENSE.md`-Datei.
 
 <details>
   <summary>Vollständigen Lizenztext anzeigen</summary>
@@ -108,3 +112,4 @@ Dieses Projekt steht unter der **MIT-Lizenz**. Sie können den Code frei verwend
   SOFTWARE.
   ```
 </details>
+
