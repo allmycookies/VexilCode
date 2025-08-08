@@ -115,6 +115,7 @@ This project is licensed under the **MIT License**. For details, see the `LICENS
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 ```
+</details>
 
 # GERMAN:
 # VexilCode Suite Update 0.9.6.llm.b1
@@ -232,6 +233,7 @@ Dieses Projekt steht unter der **MIT-Lizenz**. Details finden Sie in der `LICENS
   SOFTWARE.
   ```
 </details>
+
 
 
 
