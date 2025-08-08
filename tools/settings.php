@@ -12,7 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         'collector_startDir', 'collector_selectedCheckboxes', 'collector_excludeFileTypes', 'collector_header', 'collector_footer',
         'disposer_targetDir',
         'sitemap_targetDirectory',
-        'sr_startDir', 'sr_selectedCheckboxes', 'sr_fileTypes_manual'
+        'sr_startDir', 'sr_selectedCheckboxes', 'sr_fileTypes_manual',
+        // NEU: LLM-Einstellungen
+        'gemini_api_key', 'kimi_api_key', 'llm_provider', 'llm_base_instructions'
     ];
     // Alle bekannten Checkbox-Einstellungen
     $checkboxKeys = [
@@ -53,6 +55,12 @@ function renderToolUI($settings, $logMessages) {
         ],
         'Vergit' => [
             'vergit_storage_path' => ['label' => 'Ablageort für Projekte', 'type' => 'text_picker', 'help' => 'Der Ordner, in dem Vergit seine Projekt- und Versionsdaten speichert.']
+        ],
+        'LLM-Integration (Gemini & KIMI)' => [
+            'gemini_api_key' => ['label' => 'Gemini API Key', 'type' => 'password', 'help' => 'Dein API-Schlüssel für die Google Gemini API.'],
+            'kimi_api_key' => ['label' => 'KIMI API Key', 'type' => 'password', 'help' => 'Dein API-Schlüssel für die Moonshot AI (KIMI) API.'],
+            'llm_provider' => ['label' => 'Bevorzugtes LLM', 'type' => 'select', 'options' => ['gemini' => 'Gemini', 'kimi' => 'KIMI K2']],
+            'llm_base_instructions' => ['label' => 'KI-Basisanleitung (Prompt-Anreicherung)', 'type' => 'textarea', 'rows' => 5, 'help' => 'Diese Anweisung wird jedem Prompt vorangestellt. Gib hier vor, wie die KI antworten soll (z.B. Code von Erklärung trennen).']
         ],
         'Collector' => [
             'collector_startDir' => ['label' => 'Standard-Startverzeichnis', 'type' => 'text_picker'],
@@ -104,7 +112,13 @@ function renderToolUI($settings, $logMessages) {
             <?php foreach ($settingsMeta as $groupName => $groupFields): ?>
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5><i class="fas fa-cogs me-2"></i><?php echo htmlspecialchars($groupName); ?></h5>
+                        <h5>
+                            <?php 
+                                $icons = ['Allgemeine Konfiguration' => 'fa-sliders-h', 'Vergit' => 'fa-code-branch', 'LLM-Integration (Gemini & KIMI)' => 'fa-robot', 'Collector' => 'fa-archive', 'Disposer' => 'fa-box-open', 'Sitemap' => 'fa-sitemap', 'Suchen & Ersetzen' => 'fa-search'];
+                                $icon = $icons[$groupName] ?? 'fa-cogs';
+                            ?>
+                            <i class="fas <?php echo $icon; ?> me-2"></i><?php echo htmlspecialchars($groupName); ?>
+                        </h5>
                     </div>
                     <div class="card-body">
                         <?php foreach ($groupFields as $key => $meta): ?>
@@ -132,6 +146,20 @@ function renderToolUI($settings, $logMessages) {
                                             <input type="text" class="form-control" id="setting_<?php echo $key; ?>" name="<?php echo $key; ?>" value="<?php echo htmlspecialchars($value); ?>" <?php echo $isDisabled ? 'disabled' : ''; ?>>
                                             <button class="btn btn-outline-secondary btn-folder-picker" type="button" data-target-input="#setting_<?php echo $key; ?>" <?php echo $isDisabled ? 'disabled' : ''; ?>><i class="fas fa-folder-open"></i></button>
                                         </div>
+                                        <?php
+                                        break;
+                                    case 'password':
+                                         ?>
+                                        <input type="password" class="form-control" id="setting_<?php echo $key; ?>" name="<?php echo $key; ?>" value="<?php echo htmlspecialchars($value); ?>" <?php echo $isDisabled ? 'disabled' : ''; ?>>
+                                        <?php
+                                        break;
+                                    case 'select':
+                                        ?>
+                                        <select class="form-select" id="setting_<?php echo $key; ?>" name="<?php echo $key; ?>" <?php echo $isDisabled ? 'disabled' : ''; ?>>
+                                            <?php foreach($meta['options'] as $optVal => $optLabel): ?>
+                                            <option value="<?php echo $optVal; ?>" <?php echo ($value === $optVal) ? 'selected' : ''; ?>><?php echo $optLabel; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                         <?php
                                         break;
                                     default: // 'text'

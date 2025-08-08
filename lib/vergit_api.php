@@ -19,10 +19,10 @@ $response = ['status' => 'error', 'message' => 'Unbekannte Aktion.'];
 
 try {
     $vergit = new Vergit();
-
     switch ($action) {
         case 'get_instances':
-            $versionId = $_POST['version_id'] ?? null;
+            $versionId = $_POST['version_id'] ??
+ null;
             if (!$versionId) throw new Exception('Keine Versions-ID angegeben.');
             
             $instances = $vergit->getInstances($versionId);
@@ -39,8 +39,10 @@ try {
                     $domain = $_SERVER['HTTP_HOST'];
                     $instance['url'] = $protocol . $domain . $relativePath;
                 } else {
-                    $instance['url'] = null; // Pfad ist nicht über das Web erreichbar
+                    $instance['url'] = null;
                 }
+                // Server-Pfad bleibt immer erhalten
+                $instance['path'] = $realInstancePath;
                 $instancesWithUrls[] = $instance;
             }
             
@@ -54,7 +56,6 @@ try {
             $newInstance = $vergit->createInstance($versionId);
             $response = ['status' => 'success', 'message' => 'Neue Instanz erfolgreich erstellt.', 'instance' => $newInstance];
             break;
-
         case 'delete_instance':
             $instanceId = $_POST['instance_id'] ?? null;
             if (!$instanceId) throw new Exception('Keine Instanz-ID angegeben.');
@@ -62,7 +63,6 @@ try {
             $vergit->deleteInstance($instanceId);
             $response = ['status' => 'success', 'message' => 'Instanz erfolgreich gelöscht.'];
             break;
-
         default:
             http_response_code(400);
             $response['message'] = 'Ungültige Aktion angegeben.';
@@ -74,4 +74,3 @@ try {
 }
 
 echo json_encode($response);
-// Ende der Datei: lib/vergit_api.php

@@ -19,7 +19,7 @@ class Vergit
     {
         // Standardkonfiguration
         $this->config = [
-            'storage_path' => realpath(__DIR__ . '/../data/vergit_projects'),
+            'storage_path' => realpath(__DIR__ . '/data/vergit_projects'),
             'archive_path' => realpath(__DIR__ . '/../data/vergit_archives')
         ];
         // Lade benutzerspezifische Einstellungen, falls vorhanden

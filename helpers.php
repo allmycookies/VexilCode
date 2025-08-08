@@ -3,7 +3,6 @@
 
 // Lade die zentrale Pfad-Konfiguration
 require_once __DIR__ . '/config/config.php';
-
 define('SETTINGS_FILE', __DIR__ . '/config/settings.json');
 define('LOCKOUT_DIR', __DIR__ . '/data/lockouts/');
 define('MAX_LOGIN_ATTEMPTS', 3);
@@ -26,7 +25,8 @@ function cleanup_expired_lockouts() {
     if ($handle = opendir(LOCKOUT_DIR)) {
         while (false !== ($entry = readdir($handle))) {
             if ($entry != "." && $entry != "..") {
-                $path = LOCKOUT_DIR . $entry;
+                $path = LOCKOUT_DIR .
+ $entry;
                 if (filemtime($path) < (time() - LOCKOUT_TIME)) {
                     @unlink($path);
                 }
@@ -94,15 +94,32 @@ function getDefaultSettings(): array {
         'disposer_targetDir' => $ROOT_PATH,
         // Search & Replace
         'sr_startDir' => $ROOT_PATH,
-        'sr_searchString' => '',
+        'sr_searchString' => 
+ '',
         'sr_replaceString' => '',
         'sr_includeSubdirs' => true,
         'sr_backupFiles' => true,
         'sr_fileTypes' => 'php,html,js,css,txt,md',
         // Sitemap
         'sitemap_targetDirectory' => $ROOT_PATH,
-        // NEU: Vergit
-        'vergit_storage_path' => realpath(__DIR__ . '/../data/vergit_projects') ?: __DIR__ . '/../data/vergit_projects',
+        // Vergit
+        'vergit_storage_path' => realpath(__DIR__ . '/../data/vergit_projects') ?: __DIR__ .
+ '/../data/vergit_projects',
+        // LLM Integration
+        'gemini_api_key' => '',
+        'kimi_api_key' => '',
+        'llm_provider' => 'gemini',
+        'llm_base_instructions' => "Du bist ein Experte für Webentwicklung und ein hilfreicher Programmier-Assistent. Deine Aufgabe ist es, Quellcode basierend auf den Anweisungen des Benutzers zu modifizieren, zu refaktorisieren oder zu erstellen.
+
+**WICHTIGE AUSGABEREGELN:**
+1.  **Struktur:** Deine Antwort MUSS IMMER spezielle Trennzeichen verwenden, um Code und Erklärung voneinander zu trennen.
+2.  **Code-Block:** Wenn du Code ausgibst, MUSS dieser Block mit einer Zeile `---LLM_CODE_BEGIN---` beginnen und mit einer Zeile `---LLM_CODE_END---` enden.
+3.  **Erklärungs-Block:** Wenn du eine Erklärung ausgibst, MUSS dieser Block mit einer Zeile `---LLM_EXPL_BEGIN---` beginnen und mit einer Zeile `---LLM_EXPL_END---` enden.
+4.  **Kombinierte Antwort:** Wenn der Benutzer sowohl Code als auch eine Erklärung anfordert (Standardfall), gib zuerst den vollständigen Code-Block und danach den vollständigen Erklärungs-Block aus.
+5.  **Nur Erklärung:** Wenn der Benutzer explizit nur eine Erklärung wünscht, gib NUR den Erklärungs-Block aus.
+6.  **Nur Code:** Wenn der Benutzer explizit nur Code wünscht, gib NUR den Code-Block aus.
+7.  **Quellcode-Inhalt:** Der Quellcode MUSS immer vollständig und roh (ohne Markdown-Formatierung wie ```) ausgegeben werden. Gib immer den gesamten modifizierten Code-Block zurück, auch wenn nur eine Zeile geändert wurde.
+8.  **Erklärungs-Inhalt:** Halte Erklärungen kurz, prägnant und auf Deutsch. Vermeide Füllwörter und Begrüßungen."
     ];
 }
 
@@ -123,7 +140,8 @@ function loadSettings(): array {
     $jsonString = file_get_contents(SETTINGS_FILE);
     $data = json_decode($jsonString, true);
     // Führt Standardwerte mit gespeicherten Werten zusammen, um neue Optionen abzudecken
-    return is_array($data) ? array_merge($defaults, $data) : $defaults;
+    return is_array($data) ?
+ array_merge($defaults, $data) : $defaults;
 }
 
 /**
@@ -175,7 +193,8 @@ function renderLog(array $log, callable $formatter = null) {
             $icon = '';
             $textClass = '';
             switch ($entry['type']) {
-                case 'success': $icon = '<i class="fas fa-check-circle text-success fa-fw"></i>'; $textClass = 'text-success'; break;
+                case 'success': $icon = '<i class="fas fa-check-circle text-success fa-fw"></i>';
+ $textClass = 'text-success'; break;
                 case 'error': $icon = '<i class="fas fa-times-circle text-danger fa-fw"></i>'; $textClass = 'text-danger'; break;
                 case 'warning': $icon = '<i class="fas fa-exclamation-triangle text-warning fa-fw"></i>'; break;
                 case 'info': $icon = '<i class="fas fa-info-circle text-info fa-fw"></i>'; break;
@@ -205,7 +224,8 @@ function generate_csrf_token(): string {
  * Bricht das Skript bei einem Fehler ab.
  */
 function validate_csrf_token() {
-    $token = $_POST['csrf_token'] ?? $_GET['csrf_token'] ?? null;
+    $token = $_POST['csrf_token'] ?? $_GET['csrf_token'] ??
+ null;
     if (!$token || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
         http_response_code(403);
         if (strpos($_SERVER['REQUEST_URI'], '/api/') !== false || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')) {

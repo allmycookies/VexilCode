@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     function normalizePath(path) {
         if (!path) return '';
+   
         // Ersetzt doppelte Slashes (außer im Protokoll-Teil wie http://) und Backslashes
         return path.replace(/([^:])(\/\/+)/g, '$1/').replace(/\\/g, '/');
     }
@@ -23,9 +24,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if(themeSwitcherBtn) themeSwitcherBtn.addEventListener('click', () => setTheme(htmlEl.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'));
     setTheme(localStorage.getItem('theme') || 'light');
+
+    // --- Vergit Navigations-Link ---
+    const vergitNavLink = document.getElementById('vergit-nav-link');
+    if (vergitNavLink) {
+        const lastProjectId = localStorage.getItem('vergit_last_project_id');
+        if (lastProjectId) {
+            vergitNavLink.href = `?tool=vergit&project_id=${lastProjectId}`;
+        }
+    }
+
     // --- Globale Toast-Funktion ---
     const appToastEl = document.getElementById('appToast');
-    const appToast = appToastEl ? new bootstrap.Toast(appToastEl) : null;
+    const appToast = appToastEl ?
+ new bootstrap.Toast(appToastEl) : null;
     function showAppToast(status, message) {
         if (!appToast) return;
         const toastTitle = document.getElementById('toastTitle');
@@ -59,15 +71,18 @@ document.addEventListener('DOMContentLoaded', function () {
             if (input.type === 'checkbox') {
                 if (key.endsWith('[]')) {
               
+ 
                      if (!settings[key]) {
                         settings[key] = [];
                     }
                     if (input.checked) {
-                        
+         
+                       
                         settings[key].push(input.value);
                     }
                 } else {
                     settings[key] = input.checked;
+ 
                 }
             } else {
           
@@ -103,7 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
-            const later = () => { clearTimeout(timeout); func(...args); };
+            const later = () => { clearTimeout(timeout);
+                func(...args); };
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
@@ -135,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
              pathDisplay.textContent = normalizePath(data.path);
-             let html = '';
+            let html = '';
             if (data.parent) {
                 html += `<a href="#" class="list-group-item list-group-item-action" data-path="${normalizePath(data.parent)}"><i class="fas fa-arrow-up fa-fw me-2"></i> Übergeordnetes Verzeichnis</a>`;
             }
@@ -185,12 +201,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 navigator.clipboard.writeText(sitemapContent.innerText).then(() => {
                     const originalHTML = this.innerHTML;
                   
+ 
                      this.innerHTML = '<i class="fas fa-check me-1"></i> Kopiert!';
                     this.classList.add('btn-success'); this.classList.remove('btn-outline-secondary');
                     setTimeout(() => { this.innerHTML = originalHTML; this.classList.remove('btn-success'); this.classList.add('btn-outline-secondary'); }, 2000);
                 }).catch(err => {
+     
                     showAppToast('error', 'Kopieren fehlgeschlagen: ' + err);
                 });
+            }
+        });
+    }
+
+    // --- Sitemap: Formular-Normalisierung ---
+    const sitemapForm = document.getElementById('sitemap-form');
+    if (sitemapForm) {
+        sitemapForm.addEventListener('submit', function(e) {
+            const targetInput = document.getElementById('sitemap_targetDirectory');
+            if (targetInput) {
+                targetInput.value = normalizePath(targetInput.value);
             }
         });
     }
@@ -204,14 +233,17 @@ document.addEventListener('DOMContentLoaded', function () {
             
             showCustomConfirm(message, () => {
        
+ 
                  if (targetForm) {
                     const originalButtonName = button.getAttribute('name');
                     const originalButtonValue = button.getAttribute('value');
                     if (originalButtonName) {
-                     
+             
+                    
                        const hiddenInput = document.createElement('input');
                         hiddenInput.type = 'hidden';
                         hiddenInput.name = originalButtonName;
+              
                         hiddenInput.value = originalButtonValue || '1';
               
                          targetForm.appendChild(hiddenInput);
@@ -224,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
-    
     // =================================================================
     // --- File Manager Logik ---
     // =================================================================
@@ -239,6 +270,7 @@ document.addEventListener('DOMContentLoaded', function () {
             new URLSearchParams(window.location.search).get('path') || 
             localStorage.getItem('fm_last_path') || 
             fileManagerCard.dataset.startPath
+ 
  
         );
         
@@ -382,10 +414,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td colspan="7">
                         <a href="#" class="text-decoration-none" data-type="dir">
                           
+ 
                            <i class="fas fa-level-up-alt fa-fw me-2 text-secondary"></i>
                             .. (Eine Ebene höher)
                          </a>
-                    </td>
+            
+                     </td>
                 `;
                 fileListBody.appendChild(parentRow);
             }
@@ -399,11 +433,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 const icon = item.is_dir ? 'fa-folder' : 'fa-file-alt';
                 let nameHtml;
                 if (item.is_dir) {
-                    nameHtml = `<a href="#" class="text-decoration-none" data-type="dir"><i class="fas ${icon} fa-fw me-2"></i> ${item.name}</a>`;
+                    nameHtml = `<a href="#" class="text-decoration-none" data-type="dir"><i class="fas 
+ ${icon} fa-fw me-2"></i> ${item.name}</a>`;
                 } else if (item.is_editable) {
                     nameHtml = `<a href="?tool=editor&file=${encodeURIComponent(item.path)}" target="_blank" class="text-decoration-none" data-type="file"><i class="fas ${icon} fa-fw me-2"></i> ${item.name}</a>`;
                 } else {
-                    nameHtml = `<span class="text-body-secondary"><i class="fas ${icon} fa-fw me-2"></i> ${item.name}</span>`;
+                    nameHtml = `<span class="text-body-secondary"><i class="fas ${icon} fa-fw me-2"></i> 
+ ${item.name}</span>`;
                 }
 
                 const row = document.createElement('tr');
@@ -411,6 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 row.dataset.name = item.name;
                 row.dataset.isDir = item.is_dir.toString();
            
+ 
                      row.dataset.perms = item.perms;
                 row.dataset.sizeBytes = item.size_bytes;
                 const isZip = !item.is_dir && item.name.endsWith('.zip');
@@ -426,7 +463,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 actionsHtml += `<button class="btn btn-outline-secondary" data-action="rename" title="Umbenennen"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-outline-info" data-action="move-copy" title="Kopieren/Verschieben"><i class="fas fa-copy"></i></button>
-                                <button class="btn btn-outline-danger" data-action="delete" title="Löschen"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-outline-danger" data-action="delete" title="Löschen"><i class="fas 
+ fa-trash"></i></button>
                                </div>`;
                 row.innerHTML = `
                     <td class="text-center"><input class="form-check-input fm-item-checkbox" type="checkbox" value="${item.path}"></td>
@@ -434,6 +472,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td>${item.size}</td>
                     <td><a href="#" class="perms-link" data-action="chmod">${item.perms}</a></td>
           
+ 
                      <td>${item.owner}</td>
                     <td>${new Date(item.modified * 1000).toLocaleString('de-DE')}</td>
                     <td><small>${item.mime_type}</small></td>
@@ -462,17 +501,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 let separator = document.createElement('span');
                 separator.className = 'separator';
                 
+ 
                 separator.innerHTML = '<i class="fas fa-chevron-right"></i>';
                 breadcrumbNav.appendChild(separator);
 
                 if (index === parts.length - 1) {
                     let activeSpan = document.createElement('span');
+                   
                     activeSpan.className = 'active';
              
                        activeSpan.textContent = part;
                     breadcrumbNav.appendChild(activeSpan);
                 } else {
-                    let partLink = document.createElement('a');
+                    let 
+ partLink = document.createElement('a');
                     partLink.href = '#';
         
                      partLink.dataset.path = currentBuildPath;
@@ -498,6 +540,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         selectedDirCount++;
                     } else {
                     
+ 
                          selectedFileCount++;
                         selectedSize += parseInt(row.dataset.sizeBytes, 10);
                     }
@@ -509,6 +552,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <span class="badge bg-secondary-subtle text-body-secondary fw-normal"><i class="fas fa-file-alt fa-fw me-1"></i> ${selectedFileCount} Datei(en)</span>
                     <span class="badge bg-secondary-subtle text-body-secondary fw-normal"><i class="fas fa-folder fa-fw me-1"></i> ${selectedDirCount} Ordner</span>
         
+ 
                      <span class="badge bg-secondary-subtle text-body-secondary fw-normal"><i class="fas fa-hdd fa-fw me-1"></i> ${formatBytes(selectedSize)}</span>
                 `;
             } else {
@@ -516,11 +560,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     <span class="badge bg-secondary-subtle text-body-secondary fw-normal"><i class="fas fa-file-alt fa-fw me-1"></i> ${currentDirInfo.file_count} Datei(en)</span>
                     <span class="badge bg-secondary-subtle text-body-secondary fw-normal"><i class="fas fa-folder fa-fw me-1"></i> ${currentDirInfo.dir_count} Ordner</span>
                     
+ 
                     <span class="badge bg-secondary-subtle text-body-secondary fw-normal"><i class="fas fa-hdd fa-fw me-1"></i> ${currentDirInfo.total_size}</span>
                 `;
             }
             
-            bulkActionsFooter.style.display = selectedItems.size > 0 ? 'table-footer-group' : 'none';
+            bulkActionsFooter.style.display = selectedItems.size > 0 ?
+ 'table-footer-group' : 'none';
             const allCheckboxes = fileListBody.querySelectorAll('.fm-item-checkbox');
             selectAllCheckbox.checked = allCheckboxes.length > 0 && selectedItems.size === allCheckboxes.length;
             selectAllCheckbox.indeterminate = selectedItems.size > 0 && selectedItems.size < allCheckboxes.length;
@@ -530,11 +576,12 @@ document.addEventListener('DOMContentLoaded', function () {
         function updateSortIndicators() {
             sortableHeaders.forEach(header => {
                 const icon = header.querySelector('i');
-                if (header.dataset.sort === currentSort.by) icon.className = currentSort.order === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
-                else icon.className = 'fas fa-sort';
-       
-             });
-            updateSortIndicators();
+                if (header.dataset.sort === currentSort.by) {
+                    icon.className = currentSort.order === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+                } else {
+                    icon.className = 'fas fa-sort';
+                }
+            });
         }
 
         refreshBtn.addEventListener('click', () => loadFiles(currentPath));
@@ -566,7 +613,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const formData = new FormData();
             formData.append('action', 'upload');
             formData.append('path', currentPath);
-            for (const file of files) { formData.append('files[]', file); }
+            for (const file 
+ of files) { formData.append('files[]', file); }
             if (csrfToken) { formData.append('csrf_token', csrfToken); }
             uploadModal.hide();
             this.blur();
@@ -580,10 +628,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const checkbox = row.querySelector('.fm-item-checkbox');
                 if (checkbox) {
                
+ 
                      checkbox.checked = !checkbox.checked;
                     checkbox.dispatchEvent(new Event('change', { bubbles: true }));
                 }
             }
+            
             
             const link = e.target.closest('a');
             if (link && link.dataset.type === 'dir') {
@@ -592,7 +642,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             
             const actionBtn = e.target.closest('button[data-action], a[data-action]');
-            if (actionBtn) {
+       
+             if (actionBtn) {
          
                e.preventDefault();
                 handleAction(actionBtn.dataset.action, [row.dataset.path], row.dataset.perms);
@@ -605,7 +656,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (actionBtn) {
                 const action = actionBtn.dataset.action;
                 if (action === 'deselect-all') { selectAllCheckbox.checked = false; fileListBody.querySelectorAll('.fm-item-checkbox').forEach(cb => cb.checked = false); }
-                else if (action === 'invert-selection') { fileListBody.querySelectorAll('.fm-item-checkbox').forEach(cb => cb.checked = !cb.checked); }
+                else if (action === 
+ 'invert-selection') { fileListBody.querySelectorAll('.fm-item-checkbox').forEach(cb => cb.checked = !cb.checked); }
                 updateSelection();
                 handleAction(action, Array.from(selectedItems));
             }
@@ -617,8 +669,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 loadFiles(currentPath, sortBy, sortOrder); 
             });
     
+ 
             });
-
         if (passPathToSrBtn) {
             passPathToSrBtn.addEventListener('click', () => {
                 window.location.href = `?tool=search_replace&sr_startDir=${encodeURIComponent(currentPath)}`;
@@ -636,12 +688,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (passPathToSitemapBtn) {
             passPathToSitemapBtn.addEventListener('click', () => {
-                window.location.href = `?tool=sitemap&sitemap_targetDirectory=${encodeURIComponent(currentPath)}`;
+                window.location.href = `?tool=sitemap&sitemap_targetDirectory=${encodeURIComponent(currentPath)}&csrf_token=${csrfToken}`;
             });
         }
 
         function handleAction(action, items, itemData = '') {
-            const itemName = items.length === 1 ? items[0].split(/[\\/]/).pop() : '';
+            const itemName = items.length === 1 ?
+ items[0].split(/[\\/]/).pop() : '';
             if (items.length === 0 && !['deselect-all', 'invert-selection'].includes(action)) { showAppToast('info', 'Bitte wählen Sie zuerst ein oder mehrere Elemente aus.');
                 return; }
             switch(action) {
@@ -649,6 +702,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     showCustomConfirm(`Sollen die ausgewählten ${items.length} Elemente wirklich gelöscht werden?`, () => {
                         performApiCall({ action: 'delete', path: currentPath, items: items });
        
+ 
                      });
                     break;
                 case 'rename':
@@ -786,6 +840,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!promptModalEl) {
                 console.error('Custom prompt modal element not found!');
                 
+ 
                 return resolve(null);
             }
             const promptModal = new bootstrap.Modal(promptModalEl);
@@ -793,11 +848,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const promptInput = document.getElementById('customPromptInput');
             promptInput.value = defaultValue;
             
+ 
             const promptConfirmBtn = document.getElementById('customPromptConfirmBtn');
  
                        const newPromptConfirmBtn = promptConfirmBtn.cloneNode(true);
             promptConfirmBtn.parentNode.replaceChild(newPromptConfirmBtn, promptConfirmBtn);
-            
             const cancelBtn = promptModalEl.querySelector('[data-bs-dismiss="modal"]');
             const confirmHandler = () => {
                 promptModal.hide();
@@ -845,6 +900,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const versionId = button.getAttribute('data-version-id');
                 const versionNumber = button.getAttribute('data-version-number');
                 releaseModalEl.querySelector('#modal_version_id').value = versionId;
+        
                 releaseModalEl.querySelector('#release_name').value = versionNumber + '-final';
             });
         }
@@ -857,7 +913,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 if(this.disabled) return;
                 navigator.clipboard.writeText(urlInput.value).then(() => {
                     showAppToast('success', 'Link in die Zwischenablage kopiert!');
-                }).catch(err => showAppToast('error', 'Kopieren fehlgeschlagen: ' + err));
+                }).catch(err => showAppToast('error', 
+ 'Kopieren fehlgeschlagen: ' + err));
             });
         }
 
@@ -867,16 +924,19 @@ document.addEventListener('DOMContentLoaded', function () {
             if (archiveBtn) {
                 e.preventDefault();
                 const projectId = archiveBtn.dataset.projectId;
+               
                 const projectName = archiveBtn.dataset.projectName;
                 
                 showCustomConfirm(`Möchtest du das Projekt '${projectName}' wirklich archivieren? Das Projekt wird als ZIP gesichert und aus der aktiven Liste entfernt.`, () => {
                     archiveBtn.disabled = true;
-                    archiveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+                    archiveBtn.innerHTML 
+ = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
                     const form = document.createElement('form');
                     form.method = 'post';
                     form.action = '?tool=vergit';
                     form.innerHTML = `
-                        <input type="hidden" name="csrf_token" value="${csrfToken}">
+      
+                         <input type="hidden" name="csrf_token" value="${csrfToken}">
                         <input type="hidden" name="action" value="delete_project">
                         <input type="hidden" name="project_id" value="${projectId}">
                     `;
@@ -885,7 +945,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         });
-
         // Logik für Instanzen-Modal
         const instanceModalEl = document.getElementById('instanceModal');
         if (instanceModalEl) {
@@ -894,29 +953,30 @@ document.addEventListener('DOMContentLoaded', function () {
             const versionNumberSpan = document.getElementById('instance-version-number');
             const listContainer = document.getElementById('instance-list-container');
             const createBtn = document.getElementById('create-instance-btn');
-
             instanceModalEl.addEventListener('show.bs.modal', function (event) {
                 const button = event.relatedTarget;
                 currentVersionIdForInstances = button.getAttribute('data-version-id');
                 versionNumberSpan.textContent = button.getAttribute('data-version-number');
                 loadInstances(currentVersionIdForInstances);
             });
-    
             createBtn.addEventListener('click', async function() {
                 this.disabled = true;
                 this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Erstelle...';
                 const formData = new FormData();
                 formData.append('action', 'create_instance');
                 formData.append('version_id', currentVersionIdForInstances);
-                formData.append('csrf_token', csrfToken);
+  
+                 formData.append('csrf_token', csrfToken);
                 try {
                     const response = await fetch('lib/vergit_api.php', { method: 'POST', body: formData, credentials: 'same-origin' });
                     const result = await response.json();
+            
                     if (result.status === 'success') {
                         showAppToast('success', result.message);
                         loadInstances(currentVersionIdForInstances);
                     } else {
-                        showAppToast('error', result.message || 'Ein Fehler ist aufgetreten.');
+                 
+                         showAppToast('error', result.message || 'Ein Fehler ist aufgetreten.');
                     }
                 } catch (error) {
                     showAppToast('error', 'Netzwerkfehler: ' + error.message);
@@ -925,32 +985,45 @@ document.addEventListener('DOMContentLoaded', function () {
                     this.innerHTML = '<i class="fas fa-plus me-2"></i>Neue Instanz erstellen';
                 }
             });
-    
             listContainer.addEventListener('click', async function(e) {
-                const deleteButton = e.target.closest('.delete-instance-btn');
-                if (!deleteButton) return;
-                e.preventDefault();
-                const instanceId = deleteButton.dataset.instanceId;
-                showCustomConfirm(`Soll die Instanz '${instanceId}' wirklich gelöscht werden?`, async () => {
-                    const formData = new FormData();
-                    formData.append('action', 'delete_instance');
-                    formData.append('instance_id', instanceId);
-                    formData.append('csrf_token', csrfToken);
-                    try {
-                        const response = await fetch('lib/vergit_api.php', { method: 'POST', body: formData, credentials: 'same-origin' });
-                        const result = await response.json();
-                        if (result.status === 'success') {
-                            showAppToast('success', result.message);
-                            loadInstances(currentVersionIdForInstances);
-                        } else {
-                            showAppToast('error', result.message || 'Ein Fehler ist aufgetreten.');
+                const targetButton = e.target.closest('button');
+                if (!targetButton) return;
+
+                // Handling für Delete-Button
+                if (targetButton.classList.contains('delete-instance-btn')) {
+                    e.preventDefault();
+                    const instanceId = targetButton.dataset.instanceId;
+                    showCustomConfirm(`Soll die Instanz '${instanceId}' wirklich gelöscht werden?`, async () => {
+                        const formData = new FormData();
+                        formData.append('action', 'delete_instance');
+                        formData.append('instance_id', instanceId);
+                        formData.append('csrf_token', csrfToken);
+                
+                        try {
+                            const response = await fetch('lib/vergit_api.php', { method: 'POST', body: formData, credentials: 'same-origin' });
+                            const result = await response.json();
+                            if (result.status === 'success') {
+                                showAppToast('success', result.message);
+                                loadInstances(currentVersionIdForInstances);
+                            } else {
+                                showAppToast('error', result.message || 'Ein Fehler ist aufgetreten.');
+                            }
+                        } catch (error) {
+                            showAppToast('error', 'Netzwerkfehler: ' + error.message);
                         }
-                    } catch (error) {
-                        showAppToast('error', 'Netzwerkfehler: ' + error.message);
-                    }
-                });
+                    });
+                }
+
+                // Handling für Copy-Button
+                if (targetButton.classList.contains('copy-instance-path-btn')) {
+                    const path = targetButton.dataset.path;
+                    navigator.clipboard.writeText(path).then(() => {
+                        showAppToast('success', 'Server-Pfad in die Zwischenablage kopiert!');
+                    }).catch(err => {
+                        showAppToast('error', 'Kopieren des Pfades fehlgeschlagen: ' + err);
+                    });
+                }
             });
-    
             async function loadInstances(versionId) {
                 listContainer.innerHTML = '<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div></div>';
                 const formData = new FormData();
@@ -966,13 +1039,23 @@ document.addEventListener('DOMContentLoaded', function () {
                             html = '<ul class="list-group">';
                             result.instances.forEach(inst => {
                                 const urlHtml = inst.url ? `<a href="${inst.url}" target="_blank" class="text-success text-break">${inst.url} <i class="fas fa-external-link-alt fa-xs"></i></a>` : '<span class="text-muted">Nicht im Web-Root</span>';
-                                html += `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong class="font-monospace">${inst.id}</strong>
-                                        <div class="small text-muted">Erstellt: ${inst.created_at}</div>
-                                        <div class="small">${urlHtml}</div>
+                                const pathHtml = inst.path ? `<div class="input-group input-group-sm mt-1"><input type="text" class="form-control form-control-sm font-monospace" value="${inst.path}" readonly><button type="button" class="btn btn-sm btn-outline-secondary copy-instance-path-btn" data-path="${inst.path}" title="Server-Pfad kopieren"><i class="fas fa-copy"></i></button></div>` : '';
+                                
+                                html += `<li class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <strong class="font-monospace">${inst.id}</strong>
+                                            <div class="small text-muted">Erstellt: ${inst.created_at}</div>
+                                        </div>
+                                        <div class="btn-group">
+                                            <a href="?tool=filemanager&path=${encodeURIComponent(inst.path)}" class="btn btn-sm btn-outline-primary" title="Im Dateimanager öffnen"><i class="fas fa-folder-open"></i></a>
+                                            <button class="btn btn-sm btn-outline-danger delete-instance-btn" data-instance-id="${inst.id}" title="Instanz löschen"><i class="fas fa-trash"></i></button>
+                                        </div>
                                     </div>
-                                    <button class="btn btn-sm btn-outline-danger delete-instance-btn" data-instance-id="${inst.id}" title="Instanz löschen"><i class="fas fa-trash"></i></button>
+                                    <div class="mt-2">
+                                        <div class="small mb-1"><strong>Permalink:</strong> ${urlHtml}</div>
+                                        <div class="small"><strong>Server-Pfad:</strong>${pathHtml}</div>
+                                    </div>
                                 </li>`;
                             });
                             html += '</ul>';
@@ -998,33 +1081,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 if (container.dataset.loaded) return;
 
+        
                 container.innerHTML = '<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-muted small">Suche nach Änderungen...</p></div>';
                 
                 const versionPath = this.dataset.versionPath;
                 const formData = new FormData();
                 formData.append('path', versionPath);
-                formData.append('csrf_token', csrfToken);
+        
+                 formData.append('csrf_token', csrfToken);
                 
                 try {
                     const response = await fetch('lib/diff_api.php', { method: 'POST', body: formData, credentials: 'same-origin' });
                     const result = await response.json();
-
                     if (result.status === 'success') {
                         if (result.diffs.length > 0) {
                             let accordionHtml = '<div class="accordion" id="accordion-diff-' + targetId.substring(1) + '">';
                             result.diffs.forEach((diff, index) => {
                                 const collapseId = 'collapse-diff-' + targetId.substring(1) + '-' + index;
                                 accordionHtml += `
-                                    <div class="accordion-item">
+                      
+                               <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false">
+                                            
+                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false">
                                                 <i class="fas fa-file-code me-2"></i> ${diff.file}
-                                            </button>
+                                          
+                                             </button>
                                         </h2>
                                         <div id="${collapseId}" class="accordion-collapse collapse" data-bs-parent="#accordion-diff-${targetId.substring(1)}">
-                                            <div class="accordion-body p-0">${diff.html}</div>
+              
+                                               <div class="accordion-body p-0">${diff.html}</div>
                                         </div>
-                                    </div>
+                            
+                     </div>
                                 `;
                             });
                             accordionHtml += '</div>';
@@ -1033,7 +1122,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             container.innerHTML = '<p class="text-center text-muted p-3">Keine `.srbkup`-Dateien für einen Vergleich gefunden.</p>';
                         }
                     } else {
-                        container.innerHTML = `<div class="alert alert-danger mb-0">${result.message || 'Fehler beim Laden der Diffs.'}</div>`;
+                        container.innerHTML = `<div class="alert alert-danger mb-0">${result.message ||
+ 'Fehler beim Laden der Diffs.'}</div>`;
                     }
                 } catch (error) {
                     container.innerHTML = `<div class="alert alert-danger mb-0">Netzwerkfehler: ${error.message}</div>`;

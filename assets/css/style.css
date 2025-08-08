@@ -203,6 +203,129 @@ body.has-fixed-footer {
 
 
 /* =========================================== */
+/* --- Editor Page Styles                  --- */
+/* =========================================== */
+body.editor-body, html.editor-html { height: 100%;
+    margin: 0; padding: 0; display: flex; flex-direction: column; }
+.top-bar { flex-shrink: 0; }
+.ace_search {
+    background-color: var(--bs-tertiary-bg);
+    border: 1px solid var(--bs-border-color);
+    color: var(--bs-body-color);
+}
+.ace_search_form, .ace_replace_form {
+    background-color: var(--bs-tertiary-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+.ace_search_field {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border: 1px solid var(--bs-border-color);
+}
+.ace_button {
+    background-color: var(--bs-secondary-bg);
+    color: var(--bs-body-color);
+    border: 1px solid var(--bs-border-color);
+}
+.ace_button.checked {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+/* --- Editor Status Bar --- */
+.editor-status-bar {
+    flex-shrink: 0;
+    padding: 0.2rem 0.75rem;
+    background-color: var(--bs-tertiary-bg);
+    border-top: 1px solid var(--bs-border-color);
+    font-size: 0.75rem;
+    color: var(--bs-secondary-color);
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+
+/* --- LLM Editor Split View (Responsive) --- */
+/* Default: Vertical split for mobile (portrait) */
+.editor-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    overflow: hidden;
+}
+#editor-wrapper {
+    flex: 1; 
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+}
+#editor {
+    flex-grow: 1;
+}
+#llm-wrapper {
+    flex: 0;
+    height: 0;
+    min-height: 0;
+    transition: flex 0.3s ease-in-out, height 0.3s ease-in-out;
+    overflow: hidden;
+}
+.editor-container.llm-active #editor-wrapper {
+    flex: 1; 
+}
+.editor-container.llm-active #llm-wrapper {
+    flex: 0.5; 
+    height: 50%;
+}
+
+/* Desktop: Horizontal split for screens >= 768px wide (landscape) */
+@media (min-width: 768px) {
+    .editor-container {
+        flex-direction: row;
+        /* Override to horizontal */
+        padding: 1rem;
+        gap: 1rem;
+    }
+    #editor-wrapper {
+        min-height: auto;
+        /* Reset min-height */
+        min-width: 0;
+        /* Set min-width for row layout */
+    }
+    #llm-wrapper {
+        height: auto;
+        /* Reset height */
+        width: 0;
+        /* Control width instead */
+        min-width: 0;
+        transition: flex 0.3s ease-in-out, width 0.3s ease-in-out; /* Animate width */
+    }
+    .editor-container.llm-active #llm-wrapper {
+        height: auto;
+        /* Reset height */
+        width: 50%;
+        /* Control width */
+    }
+}
+
+#llm-feedback {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+#llm-prompt-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+}
+#llm-prompt {
+    flex-grow: 1;
+}
+
+/* =========================================== */
 /* --- Responsive Anpassungen (Smartphones) --- */
 /* =========================================== */
 
@@ -212,6 +335,33 @@ body.has-fixed-footer {
         padding-left: 1rem;
         padding-right: 1rem;
     }
+
+    /* --- Editor Top Bar --- */
+    .top-bar {
+        flex-wrap: wrap;
+        padding: 0.5rem !important;
+    }
+    .editor-actions {
+        order: 1;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.25rem;
+    }
+    .editor-filepath {
+        order: 2;
+        width: 100%;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        text-align: center;
+        background-color: var(--bs-tertiary-bg);
+        padding: 0.25rem;
+        border-radius: var(--bs-border-radius-sm);
+    }
+    .editor-actions .btn-group, .editor-actions .btn {
+        flex-grow: 1;
+    }
+
 
     /* --- Navbar Anpassungen für Mobilgeräte --- */
     .navbar-brand {
