@@ -31,7 +31,7 @@ $apiUrl = '';
 $requestBody = [];
 
 // Basisanleitung aus den Einstellungen holen
-$baseInstructions = $settings['llm_base_instructions'] ?? "Beantworte Anfragen als Webentwicklungs-Assistent. Gib NUR modifizierten Quellcode und eine sehr kurze, prägnante Erklärung aus. Trenne den Quellcode-Block von der Erklärung durch eine Zeile, die nur '---' enthält.";
+$baseInstructions = isset($settings) && isset($settings['llm_base_instructions']) ? $settings['llm_base_instructions'] : "";
 $fullPrompt = $baseInstructions . "\n\n--- Benutzer-Prompt ---\n" . $prompt . "\n\n--- Quellcode ---\n" . $codeContent;
 
 
@@ -119,4 +119,5 @@ if(empty($responseText)) {
 }
 
 echo json_encode(['status' => 'success', 'response' => $responseText]);
+
 ?>
