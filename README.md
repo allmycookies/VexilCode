@@ -1,5 +1,5 @@
-# VexilCode Suite
-Update 0.9.6.llm.b1
+# VexilCode Suite Update 0.9.6.llm.b1
+
 ![Screenshot Placeholder](https://dev2.safra-media.com/vexilcode_logo1.png)
 
 VexilCode Suite ist eine in PHP geschriebene, selbst-gehostete Web-Anwendung, die eine integrierte Entwicklungsumgebung (IDE) direkt auf dem Server bereitstellt. Der Zweck der Anwendung ist die Konsolidierung von Werkzeugen wie FTP-Clients, SSH-Terminals und Code-Editoren in einer einzigen, webbasierten Oberfläche. Dies ermöglicht die direkte Bearbeitung und Verwaltung von Webprojekten auf dem Server, wodurch der Entwicklungs-Workflow beschleunigt wird.
@@ -113,5 +113,6 @@ Dieses Projekt steht unter der **MIT-Lizenz**. Details finden Sie in der `LICENS
   SOFTWARE.
   ```
 </details>
+
 
 
