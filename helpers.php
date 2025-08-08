@@ -11,7 +11,8 @@ define('LOCKOUT_TIME', 5 * 60); // 5 Minuten in Sekunden
 /**
  * Erstellt das Verzeichnis für Lockout-Dateien, falls es nicht existiert.
  */
-function ensure_lockout_dir_exists() {
+function ensure_lockout_dir_exists()
+{
     if (!is_dir(LOCKOUT_DIR)) {
         mkdir(LOCKOUT_DIR, 0755, true);
     }
@@ -20,14 +21,14 @@ function ensure_lockout_dir_exists() {
 /**
  * Bereinigt abgelaufene Lockout-Dateien.
  */
-function cleanup_expired_lockouts() {
+function cleanup_expired_lockouts()
+{
     ensure_lockout_dir_exists();
     if ($handle = opendir(LOCKOUT_DIR)) {
         while (false !== ($entry = readdir($handle))) {
-            if ($entry != "." && $entry != "..") {
-                $path = LOCKOUT_DIR .
- $entry;
-                if (filemtime($path) < (time() - LOCKOUT_TIME)) {
+            if ($entry != '.' && $entry != '..') {
+                $path = LOCKOUT_DIR . $entry;
+                if (filemtime($path) < time() - LOCKOUT_TIME) {
                     @unlink($path);
                 }
             }
@@ -41,7 +42,8 @@ function cleanup_expired_lockouts() {
  * @param string $username
  * @return bool
  */
-function is_user_locked_out(string $username): bool {
+function is_user_locked_out(string $username): bool
+{
     ensure_lockout_dir_exists();
     $lockFile = LOCKOUT_DIR . 'user_' . sha1(strtolower($username)) . '.lock';
     return file_exists($lockFile);
@@ -51,7 +53,8 @@ function is_user_locked_out(string $username): bool {
  * Vermerkt einen fehlgeschlagenen Login-Versuch und sperrt den Benutzer bei Bedarf.
  * @param string $username
  */
-function handle_failed_login(string $username) {
+function handle_failed_login(string $username)
+{
     if (!isset($_SESSION['login_attempts'])) {
         $_SESSION['login_attempts'] = [];
     }
@@ -72,18 +75,19 @@ function handle_failed_login(string $username) {
  * Setzt die Zählung der fehlgeschlagenen Login-Versuche für einen Benutzer zurück.
  * @param string $username
  */
-function clear_failed_login_attempts(string $username) {
+function clear_failed_login_attempts(string $username)
+{
     if (isset($_SESSION['login_attempts'])) {
         unset($_SESSION['login_attempts'][strtolower($username)]);
     }
 }
 
-
 /**
  * Gibt die Standardeinstellungen für alle Tools zurück.
  * @return array
  */
-function getDefaultSettings(): array {
+function getDefaultSettings(): array
+{
     global $ROOT_PATH; // Nutze die globale Variable aus config.php
     return [
         // Collector
@@ -94,8 +98,7 @@ function getDefaultSettings(): array {
         'disposer_targetDir' => $ROOT_PATH,
         // Search & Replace
         'sr_startDir' => $ROOT_PATH,
-        'sr_searchString' => 
- '',
+        'sr_searchString' => '',
         'sr_replaceString' => '',
         'sr_includeSubdirs' => true,
         'sr_backupFiles' => true,
@@ -103,8 +106,7 @@ function getDefaultSettings(): array {
         // Sitemap
         'sitemap_targetDirectory' => $ROOT_PATH,
         // Vergit
-        'vergit_storage_path' => realpath(__DIR__ . '/../data/vergit_projects') ?: __DIR__ .
- '/../data/vergit_projects',
+        'vergit_storage_path' => realpath(__DIR__ . '/../data/vergit_projects') ?: __DIR__ . '/../data/vergit_projects',
         // LLM Integration
         'gemini_api_key' => '',
         'kimi_api_key' => '',
@@ -119,7 +121,7 @@ function getDefaultSettings(): array {
 5.  **Nur Erklärung:** Wenn der Benutzer explizit nur eine Erklärung wünscht, gib NUR den Erklärungs-Block aus.
 6.  **Nur Code:** Wenn der Benutzer explizit nur Code wünscht, gib NUR den Code-Block aus.
 7.  **Quellcode-Inhalt:** Der Quellcode MUSS immer vollständig und roh (ohne Markdown-Formatierung wie ```) ausgegeben werden. Gib immer den gesamten modifizierten Code-Block zurück, auch wenn nur eine Zeile geändert wurde.
-8.  **Erklärungs-Inhalt:** Halte Erklärungen kurz, prägnant und auf Deutsch. Vermeide Füllwörter und Begrüßungen."
+8.  **Erklärungs-Inhalt:** Halte Erklärungen kurz, prägnant und auf Deutsch. Vermeide Füllwörter und Begrüßungen.",
     ];
 }
 
@@ -128,7 +130,8 @@ function getDefaultSettings(): array {
  * Erstellt die Datei mit Standardwerten, falls sie nicht existiert.
  * @return array
  */
-function loadSettings(): array {
+function loadSettings(): array
+{
     $defaults = getDefaultSettings();
     if (!file_exists(SETTINGS_FILE)) {
         if (is_writable(dirname(SETTINGS_FILE))) {
@@ -140,8 +143,7 @@ function loadSettings(): array {
     $jsonString = file_get_contents(SETTINGS_FILE);
     $data = json_decode($jsonString, true);
     // Führt Standardwerte mit gespeicherten Werten zusammen, um neue Optionen abzudecken
-    return is_array($data) ?
- array_merge($defaults, $data) : $defaults;
+    return is_array($data) ? array_merge($defaults, $data) : $defaults;
 }
 
 /**
@@ -149,7 +151,8 @@ function loadSettings(): array {
  * @param array $newSettings
  * @return bool
  */
-function saveSettings(array $newSettings): bool {
+function saveSettings(array $newSettings): bool
+{
     if (!is_writable(dirname(SETTINGS_FILE)) || (file_exists(SETTINGS_FILE) && !is_writable(SETTINGS_FILE))) {
         return false;
     }
@@ -165,12 +168,13 @@ function saveSettings(array $newSettings): bool {
  * @param string $type Typ der Nachricht ('info', 'success', 'error', 'warning', 'special').
  * @param mixed|null $data Zusätzliche Daten, z.B. ein Dateipfad.
  */
-function logMsg(array &$logArray, string $message, string $type = 'info', $data = null) {
+function logMsg(array &$logArray, string $message, string $type = 'info', $data = null)
+{
     $logArray[] = [
         'time' => date('H:i:s'),
         'message' => $message,
         'type' => $type,
-        'data' => $data
+        'data' => $data,
     ];
 }
 
@@ -179,7 +183,8 @@ function logMsg(array &$logArray, string $message, string $type = 'info', $data 
  * @param array $log
  * @param callable|null $formatter Eine optionale Funktion zur benutzerdefinierten Formatierung einer Zeile.
  */
-function renderLog(array $log, callable $formatter = null) {
+function renderLog(array $log, callable $formatter = null)
+{
     if (empty($log)) {
         echo '<p class="text-muted small">Noch keine Ausgabe vorhanden.</p>';
         return;
@@ -193,12 +198,23 @@ function renderLog(array $log, callable $formatter = null) {
             $icon = '';
             $textClass = '';
             switch ($entry['type']) {
-                case 'success': $icon = '<i class="fas fa-check-circle text-success fa-fw"></i>';
- $textClass = 'text-success'; break;
-                case 'error': $icon = '<i class="fas fa-times-circle text-danger fa-fw"></i>'; $textClass = 'text-danger'; break;
-                case 'warning': $icon = '<i class="fas fa-exclamation-triangle text-warning fa-fw"></i>'; break;
-                case 'info': $icon = '<i class="fas fa-info-circle text-info fa-fw"></i>'; break;
-                case 'special': $icon = '<i class="fas fa-star text-primary fa-fw"></i>'; break;
+                case 'success':
+                    $icon = '<i class="fas fa-check-circle text-success fa-fw"></i>';
+                    $textClass = 'text-success';
+                    break;
+                case 'error':
+                    $icon = '<i class="fas fa-times-circle text-danger fa-fw"></i>';
+                    $textClass = 'text-danger';
+                    break;
+                case 'warning':
+                    $icon = '<i class="fas fa-exclamation-triangle text-warning fa-fw"></i>';
+                    break;
+                case 'info':
+                    $icon = '<i class="fas fa-info-circle text-info fa-fw"></i>';
+                    break;
+                case 'special':
+                    $icon = '<i class="fas fa-star text-primary fa-fw"></i>';
+                    break;
             }
             $time = '<code class="text-muted">[' . htmlspecialchars($entry['time']) . ']</code>';
             $message = htmlspecialchars($entry['message']);
@@ -212,7 +228,8 @@ function renderLog(array $log, callable $formatter = null) {
  * Erzeugt einen CSRF-Token, wenn noch keiner in der Session existiert.
  * @return string Der CSRF-Token.
  */
-function generate_csrf_token(): string {
+function generate_csrf_token(): string
+{
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
@@ -223,16 +240,23 @@ function generate_csrf_token(): string {
  * Überprüft den übergebenen CSRF-Token gegen den in der Session.
  * Bricht das Skript bei einem Fehler ab.
  */
-function validate_csrf_token() {
-    $token = $_POST['csrf_token'] ?? $_GET['csrf_token'] ??
- null;
+function validate_csrf_token()
+{
+    $token = $_POST['csrf_token'] ?? ($_GET['csrf_token'] ?? null);
     if (!$token || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
         http_response_code(403);
-        if (strpos($_SERVER['REQUEST_URI'], '/api/') !== false || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')) {
-            echo json_encode(['status' => 'error', 'message' => 'Ungültige Anfrage. Bitte laden Sie die Seite neu. (CSRF-Token-Fehler)']);
+        if (
+            strpos($_SERVER['REQUEST_URI'], '/api/') !== false ||
+            (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')
+        ) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Ungültige Anfrage. Bitte laden Sie die Seite neu. (CSRF-Token-Fehler)',
+            ]);
         } else {
             die('Ungültige Anfrage. Bitte laden Sie die Seite neu. (CSRF-Token-Fehler)');
         }
-        exit;
+        exit();
     }
 }
