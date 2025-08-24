@@ -259,6 +259,7 @@ switch ($action) {
         if (empty($oldPath) || empty($newName) || strpos($newName, '/') !== false || strpos($newName, '\\') !== false) { echo json_encode(['status' => 'error', 'message' => 'Ungültiger alter Pfad oder neuer Name.']); exit; }
         if (!is_safe_path($oldPath, $baseDir)) { echo json_encode(['status' => 'error', 'message' => 'Ungültiger Pfad.']); exit; }
         $newPath = dirname($oldPath) . '/' . $newName;
+        if (!is_safe_path($newPath, $baseDir)) { echo json_encode(['status' => 'error', 'message' => 'Ungültiger Ziel-Pfad.']); exit; }
         if (file_exists($newPath)) { echo json_encode(['status' => 'error', 'message' => 'Eine Datei oder ein Ordner mit diesem Namen existiert bereits.']); exit; }
         if (rename($oldPath, $newPath)) { echo json_encode(['status' => 'success', 'message' => 'Erfolgreich umbenannt.']);
         } else { echo json_encode(['status' => 'error', 'message' => 'Umbenennen fehlgeschlagen.']); }
@@ -333,8 +334,32 @@ switch ($action) {
                 }
             }
         }
+
+        if (!is_safe_path($destination, $baseDir)) {
+            echo json_encode(['status' => 'error', 'message' => 'Ungültiges Zielverzeichnis für die Extraktion.']);
+            exit;
+        }
+
         $zip = new ZipArchive();
         if ($zip->open($zipFile) === TRUE) {
+            // SECURITY: Check all file paths inside the zip for path traversal ("Zip Slip")
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $filename = $zip->getNameIndex($i);
+                // Prevent path traversal attacks.
+                if (strpos($filename, '..') !== false) {
+                    $zip->close();
+                    echo json_encode(['status' => 'error', 'message' => 'Das Archiv enthält eine ungültige oder unsichere Datei (Path Traversal): ' . htmlspecialchars($filename)]);
+                    exit;
+                }
+                $fullDestPath = $destination . '/' . $filename;
+                if (!is_safe_path($fullDestPath, $baseDir)) {
+                    $zip->close();
+                    echo json_encode(['status' => 'error', 'message' => 'Das Archiv enthält eine Datei, die außerhalb des erlaubten Bereichs extrahiert werden würde: ' . htmlspecialchars($filename)]);
+                    exit;
+                }
+            }
+
+            // All paths are safe, proceed with extraction
             $zip->extractTo($destination);
             $zip->close();
             echo json_encode(['status' => 'success', 'message' => 'Archiv erfolgreich entpackt.']);

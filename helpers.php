@@ -46,39 +46,66 @@ function is_user_locked_out(string $username): bool
 {
     ensure_lockout_dir_exists();
     $lockFile = LOCKOUT_DIR . 'user_' . sha1(strtolower($username)) . '.lock';
-    return file_exists($lockFile);
+    if (file_exists($lockFile)) {
+        // Überprüfen, ob das Lock noch gültig ist
+        if (filemtime($lockFile) > time() - LOCKOUT_TIME) {
+            return true;
+        }
+        // Abgelaufenes Lock entfernen, falls cleanup nicht gelaufen ist
+        @unlink($lockFile);
+    }
+    return false;
 }
 
 /**
  * Vermerkt einen fehlgeschlagenen Login-Versuch und sperrt den Benutzer bei Bedarf.
+ * Die Zählung erfolgt nun im Dateisystem, um sie persistent zu machen.
  * @param string $username
  */
 function handle_failed_login(string $username)
 {
-    if (!isset($_SESSION['login_attempts'])) {
-        $_SESSION['login_attempts'] = [];
-    }
+    ensure_lockout_dir_exists();
     $username_key = strtolower($username);
-    if (!isset($_SESSION['login_attempts'][$username_key])) {
-        $_SESSION['login_attempts'][$username_key] = 0;
-    }
-    $_SESSION['login_attempts'][$username_key]++;
+    $counterFile = LOCKOUT_DIR . 'attempt_' . sha1($username_key) . '.count';
 
-    if ($_SESSION['login_attempts'][$username_key] >= MAX_LOGIN_ATTEMPTS) {
-        ensure_lockout_dir_exists();
+    // c+ öffnet zum Lesen/Schreiben, erstellt die Datei, wenn sie nicht existiert.
+    $fp = fopen($counterFile, 'c+');
+    if (!$fp || !flock($fp, LOCK_EX)) {
+        if ($fp) fclose($fp);
+        return; // Vorgang sicher abbrechen
+    }
+
+    $attempts = (int) stream_get_contents($fp);
+    $attempts++;
+
+    if ($attempts >= MAX_LOGIN_ATTEMPTS) {
         $lockFile = LOCKOUT_DIR . 'user_' . sha1($username_key) . '.lock';
         @touch($lockFile);
+        // Zählerdatei nach der Sperrung entfernen
+        flock($fp, LOCK_UN);
+        fclose($fp);
+        @unlink($counterFile);
+    } else {
+        // Neuen Zählerstand schreiben
+        ftruncate($fp, 0);
+        rewind($fp);
+        fwrite($fp, (string) $attempts);
+        flock($fp, LOCK_UN);
+        fclose($fp);
     }
 }
 
 /**
  * Setzt die Zählung der fehlgeschlagenen Login-Versuche für einen Benutzer zurück.
+ * Löscht die Zählerdatei aus dem Dateisystem.
  * @param string $username
  */
 function clear_failed_login_attempts(string $username)
 {
-    if (isset($_SESSION['login_attempts'])) {
-        unset($_SESSION['login_attempts'][strtolower($username)]);
+    ensure_lockout_dir_exists();
+    $counterFile = LOCKOUT_DIR . 'attempt_' . sha1(strtolower($username)) . '.count';
+    if (file_exists($counterFile)) {
+        @unlink($counterFile);
     }
 }
 
